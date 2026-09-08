@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap");
+@import "tailwindcss";
+
+@font-face {
+  font-family: font1;
+  src: url(/fonts/Lausanne-300.woff2);
+}
+
+@font-face {
+  font-family: font2;
+  src: url(/fonts/Lausanne-500.woff2);
+}
+
+.font-serif-display {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.link {
+  opacity: 0;
+  transform: rotateX(90deg);
+}
+
+.stairing {
+  height: 0;
+}
+
+.moveX {
+  animation: moveAnimation 14s linear infinite;
+}
+
+.moveLink {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.link:hover .moveLink {
+  opacity: 1;
+}
+
+.contact-ticker-track {
+  animation: tickerAnimation 24s linear infinite;
+}
+
+@keyframes moveAnimation {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes tickerAnimation {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
