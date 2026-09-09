@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { NavbarContext } from '../../context/NavContext'
 import Logo from '../common/Logo'
+import { trackEvent } from '../../lib/trackEvent'
 
 const links = [
   { label: 'Work', hover: 'See everything', to: '/work' },
@@ -30,6 +31,7 @@ const FullScreenNav = () => {
   }, [navOpen])
 
   function go(path) {
+    trackEvent('click', 'nav_link', { to: path })
     isNavigatingRef.current = true
     window.scrollTo(0, 0)
     navigate(path)
@@ -39,6 +41,10 @@ const FullScreenNav = () => {
   function gsapAnimation() {
     const tl = gsap.timeline()
 
+    // Estado inicial forzado (defensa extra, sin importar cómo haya quedado
+    // de una apertura/cierre anterior): links y logo/botón ocultos, listos
+    // para animar. El fondo negro (bg-black en #fullscreennav) ya cubre todo
+    // desde el primer frame, así que nunca hay un instante "a medias".
     tl.set('.link', { opacity: 0, rotateX: 90 })
     tl.set('.navlink', { opacity: 0 })
     tl.to('.fullscreennav', { display: 'block' })
@@ -57,6 +63,10 @@ const FullScreenNav = () => {
 
   function gsapAnimationReverse() {
     if (isNavigatingRef.current) {
+      // Viniste de darle clic a un link (no a la X): cerramos YA, sin
+      // animación, para que se note la transición escalonada de Stairs
+      // en la sección nueva en vez de quedar tapada detrás del cierre
+      // lento del menú.
       isNavigatingRef.current = false
       const tl = gsap.timeline()
       tl.set('.link', { opacity: 0, rotateX: 90 })
@@ -66,6 +76,7 @@ const FullScreenNav = () => {
       return
     }
 
+    // Cerraste con la X (sin navegar): animación completa, como siempre.
     const tl = gsap.timeline()
     tl.to('.link', {
       opacity: 0,

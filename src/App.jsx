@@ -1,15 +1,19 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
 import Approach from './pages/Approach'
 import Services from './pages/Services'
 import Contact from './pages/Contact'
-import Admin from './pages/Admin'
 import Navbar from './components/Navigation/Navbar'
 import FullScreenNav from './components/Navigation/FullScreenNav'
 import Stairs from './components/common/Stairs'
 import useTrackPageview from './hooks/useTrackPageview'
+
+// Cargado bajo demanda: /admin trae su propia librería de gráficas
+// (recharts), así que solo se descarga cuando alguien de verdad entra ahí
+// — el resto de los visitantes nunca paga ese peso extra.
+const Admin = lazy(() => import('./pages/Admin'))
 
 const App = () => {
   const { pathname } = useLocation()
@@ -78,7 +82,14 @@ const App = () => {
           <Route path='/services' element={<Services />} />
           <Route path='/contact' element={<Contact />} />
           {/* Ruta oculta: no aparece en ningún menú. Se llega vía el logo (5 clics rápidos). */}
-          <Route path='/admin' element={<Admin />} />
+          <Route
+            path='/admin'
+            element={
+              <Suspense fallback={<div className='flex min-h-screen items-center justify-center bg-black font-[font1] text-white'>Cargando…</div>}>
+                <Admin />
+              </Suspense>
+            }
+          />
         </Routes>
       </Stairs>
     </div>

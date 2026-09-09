@@ -28,6 +28,10 @@ export default async function handler(req, res) {
       return
     }
 
+    // Recortamos espacios de AMBOS lados: lo que escribió el usuario, y lo
+    // que quedó guardado en la variable de entorno. Antes solo se recortaba
+    // el email, no la contraseña — un espacio invisible en Vercel bastaba
+    // para que nunca coincidiera.
     const typedEmail = email.trim().toLowerCase()
     const typedPassword = password.trim()
 
@@ -35,6 +39,9 @@ export default async function handler(req, res) {
     const passwordMatches = typedPassword === adminPassword
 
     if (!emailMatches || !passwordMatches) {
+      // Diagnóstico temporal: solo largos de texto, nunca el valor real.
+      // Si typedPasswordLength !== storedPasswordLength, confirma que hay
+      // un espacio o carácter de más/menos en algún lado.
       res.status(401).json({
         error: 'Credenciales inválidas',
         debug: {
