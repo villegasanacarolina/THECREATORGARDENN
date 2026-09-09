@@ -15,6 +15,7 @@ const links = [
 const FullScreenNav = () => {
   const fullNavLinksRef = useRef(null)
   const fullScreenRef = useRef(null)
+  const isNavigatingRef = useRef(false)
   const [navOpen, setNavOpen] = useContext(NavbarContext)
   const navigate = useNavigate()
   const thumbA = '/jewelry.jpg'
@@ -29,6 +30,7 @@ const FullScreenNav = () => {
   }, [navOpen])
 
   function go(path) {
+    isNavigatingRef.current = true
     window.scrollTo(0, 0)
     navigate(path)
     setNavOpen(false)
@@ -37,10 +39,6 @@ const FullScreenNav = () => {
   function gsapAnimation() {
     const tl = gsap.timeline()
 
-    // Estado inicial forzado (defensa extra, sin importar cómo haya quedado
-    // de una apertura/cierre anterior): links y logo/botón ocultos, listos
-    // para animar. El fondo negro (bg-black en #fullscreennav) ya cubre todo
-    // desde el primer frame, así que nunca hay un instante "a medias".
     tl.set('.link', { opacity: 0, rotateX: 90 })
     tl.set('.navlink', { opacity: 0 })
     tl.to('.fullscreennav', { display: 'block' })
@@ -58,6 +56,16 @@ const FullScreenNav = () => {
   }
 
   function gsapAnimationReverse() {
+    if (isNavigatingRef.current) {
+      isNavigatingRef.current = false
+      const tl = gsap.timeline()
+      tl.set('.link', { opacity: 0, rotateX: 90 })
+      tl.set('.navlink', { opacity: 0 })
+      tl.set('.stairing', { height: 0 })
+      tl.set('.fullscreennav', { display: 'none' })
+      return
+    }
+
     const tl = gsap.timeline()
     tl.to('.link', {
       opacity: 0,
