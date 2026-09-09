@@ -39,8 +39,6 @@ const FullScreenNav = () => {
     const tl = gsap.timeline()
 
     if (isMobile) {
-      // En mobile todo aparece EN UN SOLO FRAME: sin etapas intermedias no
-      // hay forma de que se alcance a ver la página de atrás a medio camino.
       tl.set('.link', { opacity: 1, rotateX: 0 })
       tl.set('.navlink', { opacity: 1 })
       tl.set('.stairing', { height: '100%' })
@@ -105,7 +103,7 @@ const FullScreenNav = () => {
           <div className='stairing h-full w-1/5 bg-black'></div>
         </div>
       </div>
-      <div ref={fullNavLinksRef} className='relative h-dvh overflow-hidden'>
+      <div ref={fullNavLinksRef} className='relative flex h-dvh flex-col overflow-hidden'>
         <div className="navlink relative flex w-full justify-center p-5">
           <div className='w-[clamp(12rem,22vw,18rem)] cursor-pointer' onClick={() => go('/')}>
             <Logo fill='white' className='w-full h-auto' />
@@ -121,7 +119,7 @@ const FullScreenNav = () => {
           </button>
         </div>
 
-        <div className='flex flex-col items-center py-24 lg:py-32'>
+        <div className='flex flex-1 flex-col items-center justify-center'>
           {links.map((item) => (
             <div
               key={item.to}

@@ -10,8 +10,6 @@ const contactScenes = [
 const TICKER_ROTATION_DEG = 8
 const TICKER_OFFSET_X = '-48%'
 
-// topClass ahora es un parámetro: cada versión (mobile/desktop) le pasa su
-// propio valor, así la tira nunca queda "compartida" entre ambas.
 const ContactTicker = ({ scrollDirection, topClass }) => {
   const [inverted, setInverted] = useState(false)
   const tickerText = `${CONTACT_EMAIL}  ♥  `
@@ -39,24 +37,13 @@ const ContactTicker = ({ scrollDirection, topClass }) => {
 
 /* ============================================================================
    VERSIÓN MOBILE — toca SOLO estos 4 valores para ajustar mobile.
-   No usan prefijo lg:, así que nada de lo que cambies aquí toca desktop.
    ============================================================================ */
-
-// 1) QUÉ TAN CERCA ESTÁN LOS SLOGANS GRANDES ENTRE SÍ:
-//    baja este número (ej. 50vh) para acercarlos más, súbelo para separarlos.
-const MOBILE_SECTION_HEIGHT = 'min-h-[40vh]'
-
-// Aire entre el slogan grande y el resto del contenido de su sección.
+const MOBILE_SECTION_HEIGHT = 'min-h-[58vh]'
 const MOBILE_HEADING_PADDING = 'pb-[8vh]'
-
-// 2) POSICIÓN VERTICAL DE LA TIRA AMARILLA:
-//    top-[X%] respecto a SU sección. Súbelo (ej. 85%) para bajar la tira,
-//    bájalo (ej. 70%) para subirla. Debe quedar debajo del slogan grande.
 const MOBILE_TICKER_TOP = 'top-[78%]'
-
-// 3) POSICIÓN VERTICAL DEL TEXTO PEQUEÑO + LA DIRECCIÓN:
-//    bottom-[X%]: entre más chico el número, más abajo se ve.
-const MOBILE_SMALL_TEXT_BOTTOM = 'bottom-[60%]'
+const MOBILE_SMALL_TEXT_BOTTOM = 'bottom-[10%]'
+// 4) TAMAÑO DEL TEXTO PEQUEÑO + LA DIRECCIÓN
+const MOBILE_SMALL_TEXT_SIZE = 'text-[8.4px]'
 
 const ContactMobile = ({ scrollDirection }) => (
   <div className='block lg:hidden'>
@@ -68,14 +55,14 @@ const ContactMobile = ({ scrollDirection }) => (
         <h1 className={`mx-auto max-w-[12ch] ${MOBILE_HEADING_PADDING} text-center font-[font2] text-[14vw] uppercase leading-[0.82]`}>
           To talk<br />about<br />your<br />{scene.subject}
         </h1>
-        <p className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} left-8 max-w-[12rem] text-center font-[font1] text-sm leading-tight`}>
+        <p className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} left-8 max-w-[12rem] text-center font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight`}>
           Onscreen or in an office.<br />Here. There.<br />Anywhere.
         </p>
         <a
           href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco'
           target='_blank'
           rel='noreferrer'
-          className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} right-8 max-w-[15rem] text-right font-[font1] text-sm leading-tight hover:text-[#D3FD50]`}
+          className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} right-8 max-w-[15rem] text-right font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight hover:text-[#D3FD50]`}
         >
           ITESM Campus Gdl<br />Zapopan, Jalisco →
         </a>
@@ -87,19 +74,13 @@ const ContactMobile = ({ scrollDirection }) => (
 
 /* ============================================================================
    VERSIÓN DESKTOP — toca SOLO estos 4 valores para ajustar desktop.
-   Estos son básicamente los que ya confirmaste que se ven bien.
    ============================================================================ */
-
-// 1) QUÉ TAN CERCA ESTÁN LOS SLOGANS GRANDES ENTRE SÍ
 const DESKTOP_SECTION_HEIGHT = 'min-h-[115vh]'
-
 const DESKTOP_HEADING_PADDING = 'pb-[36vh]'
-
-// 2) POSICIÓN VERTICAL DE LA TIRA AMARILLA
 const DESKTOP_TICKER_TOP = 'top-[80%]'
-
-// 3) POSICIÓN VERTICAL DEL TEXTO PEQUEÑO + LA DIRECCIÓN
 const DESKTOP_SMALL_TEXT_BOTTOM = 'bottom-[54%]'
+// 4) TAMAÑO DEL TEXTO PEQUEÑO + LA DIRECCIÓN
+const DESKTOP_SMALL_TEXT_SIZE = 'text-lg'
 
 const ContactDesktop = ({ scrollDirection }) => (
   <div className='hidden lg:block'>
@@ -111,14 +92,14 @@ const ContactDesktop = ({ scrollDirection }) => (
         <h1 className={`mx-auto max-w-[12ch] ${DESKTOP_HEADING_PADDING} text-center font-[font2] text-[9vw] uppercase leading-[0.82]`}>
           To talk<br />about<br />your<br />{scene.subject}
         </h1>
-        <p className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} left-16 max-w-[12rem] text-center font-[font1] text-lg leading-tight`}>
+        <p className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} left-16 max-w-[12rem] text-center font-[font1] ${DESKTOP_SMALL_TEXT_SIZE} leading-tight`}>
           Onscreen or in an office.<br />Here. There.<br />Anywhere.
         </p>
         <a
           href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco'
           target='_blank'
           rel='noreferrer'
-          className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} right-16 max-w-[15rem] text-right font-[font1] text-lg leading-tight hover:text-[#D3FD50]`}
+          className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} right-16 max-w-[15rem] text-right font-[font1] ${DESKTOP_SMALL_TEXT_SIZE} leading-tight hover:text-[#D3FD50]`}
         >
           ITESM Campus Gdl<br />Zapopan, Jalisco →
         </a>
