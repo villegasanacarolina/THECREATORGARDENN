@@ -44,7 +44,7 @@ const ContactTicker = ({ scrollDirection, topClass }) => {
 
 // 1) QUÉ TAN CERCA ESTÁN LOS SLOGANS GRANDES ENTRE SÍ:
 //    baja este número (ej. 50vh) para acercarlos más, súbelo para separarlos.
-const MOBILE_SECTION_HEIGHT = 'min-h-[58vh]'
+const MOBILE_SECTION_HEIGHT = 'min-h-[40vh]'
 
 // Aire entre el slogan grande y el resto del contenido de su sección.
 const MOBILE_HEADING_PADDING = 'pb-[8vh]'
@@ -56,7 +56,7 @@ const MOBILE_TICKER_TOP = 'top-[78%]'
 
 // 3) POSICIÓN VERTICAL DEL TEXTO PEQUEÑO + LA DIRECCIÓN:
 //    bottom-[X%]: entre más chico el número, más abajo se ve.
-const MOBILE_SMALL_TEXT_BOTTOM = 'bottom-[10%]'
+const MOBILE_SMALL_TEXT_BOTTOM = 'bottom-[60%]'
 
 const ContactMobile = ({ scrollDirection }) => (
   <div className='block lg:hidden'>
