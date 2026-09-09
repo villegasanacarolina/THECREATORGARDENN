@@ -55,14 +55,14 @@ const ContactMobile = ({ scrollDirection }) => (
         <h1 className={`mx-auto max-w-[12ch] ${MOBILE_HEADING_PADDING} text-center font-[font2] text-[14vw] uppercase leading-[0.82]`}>
           To talk<br />about<br />your<br />{scene.subject}
         </h1>
-        <p className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} left-7.5 max-w-[12rem] text-center font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight`}>
+        <p className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} left-6 max-w-[12rem] text-center font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight`}>
           Onscreen or in an office.<br />Here. There.<br />Anywhere.
         </p>
         <a
           href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco'
           target='_blank'
           rel='noreferrer'
-          className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} right-7.5 max-w-[15rem] text-right font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight hover:text-[#D3FD50]`}
+          className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} right-6 max-w-[15rem] text-right font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight hover:text-[#D3FD50]`}
         >
           ITESM Campus Gdl<br />Zapopan, Jalisco →
         </a>
