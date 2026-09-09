@@ -67,7 +67,7 @@ const MOBILE_TICKER_TOP = 'top-[78%]'
 
 // 3) POSICIÓN VERTICAL DEL TEXTO PEQUEÑO + LA DIRECCIÓN:
 //    bottom-[X%]: entre más chico el número, más abajo se ve.
-const MOBILE_SMALL_TEXT_BOTTOM = 'bottom-[70%]'
+const MOBILE_SMALL_TEXT_BOTTOM = 'bottom-[60%]'
 
 // 4) TAMAÑO DEL TEXTO PEQUEÑO + LA DIRECCIÓN
 const MOBILE_SMALL_TEXT_SIZE = 'text-[8.4px]'
