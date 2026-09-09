@@ -35,7 +35,21 @@ const FullScreenNav = () => {
   }
 
   function gsapAnimation() {
+    const isMobile = window.matchMedia('(max-width: 1023px)').matches
     const tl = gsap.timeline()
+
+    if (isMobile) {
+      // En mobile todo aparece EN UN SOLO FRAME: sin etapas intermedias no
+      // hay forma de que se alcance a ver la página de atrás a medio camino.
+      tl.set('.link', { opacity: 1, rotateX: 0 })
+      tl.set('.navlink', { opacity: 1 })
+      tl.set('.stairing', { height: '100%' })
+      tl.set('.fullscreennav', { display: 'block' })
+      return
+    }
+
+    tl.set('.link', { opacity: 0, rotateX: 90 })
+    tl.set('.navlink', { opacity: 0 })
     tl.to('.fullscreennav', { display: 'block' })
     tl.to('.stairing', {
       delay: 0.2,
@@ -51,7 +65,17 @@ const FullScreenNav = () => {
   }
 
   function gsapAnimationReverse() {
+    const isMobile = window.matchMedia('(max-width: 1023px)').matches
     const tl = gsap.timeline()
+
+    if (isMobile) {
+      tl.set('.link', { opacity: 0, rotateX: 90 })
+      tl.set('.navlink', { opacity: 0 })
+      tl.set('.stairing', { height: 0 })
+      tl.set('.fullscreennav', { display: 'none' })
+      return
+    }
+
     tl.to('.link', {
       opacity: 0,
       rotateX: 90,

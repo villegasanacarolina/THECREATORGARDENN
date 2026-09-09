@@ -67,15 +67,15 @@ const Contact = () => {
       {contactScenes.map((scene, index) => (
         <section
           key={scene.subject}
-          className={`relative z-0 isolate flex min-h-[110vh] flex-col justify-center overflow-hidden px-6 py-24 lg:min-h-[115vh] lg:px-16 ${index > 0 ? '-mt-[24vh] lg:mt-0' : ''}`}
+          className={`relative z-0 isolate flex min-h-[110vh] flex-col justify-center overflow-hidden px-6 py-24 lg:min-h-[115vh] lg:px-16 ${index > 0 ? '-mt-[42vh] lg:mt-0' : ''}`}
         >
-          <h1 className='mx-auto max-w-[12ch] pb-[36vh] text-center font-[font2] text-[14vw] uppercase leading-[0.82] lg:text-[9vw]'>
+          <h1 className='mx-auto max-w-[12ch] pb-[95vh] text-center font-[font2] text-[14vw] uppercase leading-[0.82] lg:text-[9vw]'>
             To talk<br />about<br />your<br />{scene.subject}
           </h1>
-          <p className='absolute bottom-[32%] left-8 max-w-[12rem] text-center font-[font1] text-sm leading-tight lg:bottom-[54%] lg:left-16 lg:text-lg'>
+          <p className='absolute bottom-[36%] left-8 max-w-[12rem] text-center font-[font1] text-sm leading-tight lg:bottom-[54%] lg:left-16 lg:text-lg'>
             Onscreen or in an office.<br />Here. There.<br />Anywhere.
           </p>
-          <a href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco' target='_blank' rel='noreferrer' className='absolute bottom-[32%] right-8 max-w-[15rem] text-right font-[font1] text-sm leading-tight hover:text-[#D3FD50] lg:bottom-[54%] lg:right-16 lg:text-lg'>
+          <a href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco' target='_blank' rel='noreferrer' className='absolute bottom-[36%] right-8 max-w-[15rem] text-right font-[font1] text-sm leading-tight hover:text-[#D3FD50] lg:bottom-[54%] lg:right-16 lg:text-lg'>
             ITESM Campus Gdl<br />Zapopan, Jalisco →
           </a>
           <ContactTicker scrollDirection={scrollDirection} />
