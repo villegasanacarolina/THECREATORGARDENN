@@ -2,46 +2,46 @@ export const CONTACT_EMAIL = 'thecreatorgardenn@gmail.com'
 
 export const projects = [
   {
-    id: 'charlotte-tilbury', title: 'What not to do', creator: '@milasmosaic', brand: 'Charlotte Tilbury / rhode / Huda Beauty', tiktokId: '7637933872218393877', href: 'https://www.tiktok.com/@milasmosaic/video/7637933872218393877', views: '21.2K', likes: '56', comments: '1,366',
+    id: 'charlotte-tilbury', title: 'What not to do', creator: '@milasmosaic', brand: 'Huda Beauty', tiktokId: '7637933872218393877', href: 'https://www.tiktok.com/@milasmosaic/video/7637933872218393877', views: '380K', likes: '22.1k', comments: '56',
   },
   {
-    id: 'based-shave', title: 'Shave with me', creator: '@nathanbaarss', brand: 'BASED', tiktokId: '7649924012407115021', href: 'https://www.tiktok.com/@nathanbaarss/video/7649924012407115021', views: '127.9K', likes: '597', comments: '5,859',
+    id: 'based-shave', title: 'Shave with me', creator: '@nathanbaarss', brand: 'BASED', tiktokId: '7649924012407115021', href: 'https://www.tiktok.com/@nathanbaarss/video/7649924012407115021', views: '1.9M', likes: '127.9K', comments: '597',
   },
   {
-    id: 'based-lotion', title: 'Based body lotion', creator: '@nathanbaarss', brand: 'BASED', tiktokId: '7600836108548607287', href: 'https://www.tiktok.com/@nathanbaarss/video/7600836108548607287', views: '4,977', likes: '38', comments: '447',
+    id: 'based-lotion', title: 'Based body lotion', creator: '@nathanbaarss', brand: 'BASED', tiktokId: '7600836108548607287', href: 'https://www.tiktok.com/@nathanbaarss/video/7600836108548607287', views: '135.9K', likes: '4997', comments: '38',
   },
   {
-    id: 'claude-replit', title: 'Most thoughtful thing', creator: '@allys.lockedin', brand: 'idk', tiktokId: '7650605771603971342', href: 'https://www.tiktok.com/@allys.lockedin/video/7650605771603971342', views: '187.8K', likes: '343', comments: '15K',
+    id: 'claude-replit', title: 'Most thoughtful thing', creator: '@allys.lockedin', brand: 'idk', tiktokId: '7650605771603971342', href: 'https://www.tiktok.com/@allys.lockedin/video/7650605771603971342', views: '3.5M', likes: '187.8K', comments: '344',
   },
   {
-    id: 'lovable', title: 'Lovable is the summer job', creator: '@2jaygee', brand: 'Lovable', tiktokId: '7659985033561754893', href: 'https://www.tiktok.com/@2jaygee/video/7659985033561754893', views: '117.8K', likes: '666', comments: '65.6K',
+    id: 'lovable', title: 'Lovable is the summer job', creator: '@2jaygee', brand: 'Lovable', tiktokId: '7659985033561754893', href: 'https://www.tiktok.com/@2jaygee/video/7659985033561754893', views: '1.5M', likes: '118K', comments: '672',
   },
   {
-    id: 'gymshark', title: 'Would you look at that', creator: '@james_beardwell', brand: 'Gymshark', tiktokId: '7499110677072629014', href: 'https://www.tiktok.com/@james_beardwell/video/7499110677072629014', views: '1.2M', likes: '3,046', comments: '93K',
+    id: 'gymshark', title: 'Would you look at that', creator: '@james_beardwell', brand: 'Gymshark', tiktokId: '7499110677072629014', href: 'https://www.tiktok.com/@james_beardwell/video/7499110677072629014', views: '13M', likes: '1.2M', comments: '3047',
   },
   {
-    id: 'ketjap-manis', title: 'Enough with the ketjap manis', creator: '@freeloading_chaz', brand: 'idk', tiktokId: '7600538039550577942', href: 'https://www.tiktok.com/@freeloading_chaz/video/7600538039550577942', views: '225.7K', likes: '1,188', comments: '5,215',
+    id: 'ketjap-manis', title: 'Enough with the ketjap manis', creator: '@freeloading_chaz', brand: 'idk', tiktokId: '7600538039550577942', href: 'https://www.tiktok.com/@freeloading_chaz/video/7600538039550577942', views: '3.2M', likes: '225.7K', comments: '1188',
   },
   {
-    id: 'pureology', title: 'Best hair behavior', creator: '@oliviadaytonn', brand: 'Pureology', tiktokId: '7634643587623390494', href: 'https://www.tiktok.com/@oliviadaytonn/video/7634643587623390494', views: '165.4K', likes: '103', comments: '13.8K',
+    id: 'pureology', title: 'Best hair behavior', creator: '@oliviadaytonn', brand: 'Pureology', tiktokId: '7634643587623390494', href: 'https://www.tiktok.com/@oliviadaytonn/video/7634643587623390494', views: '22.4M', likes: '165.4K', comments: '103',
   },
   {
-    id: 'oner-active', title: "It's so normal", creator: '@rubygrifiths', brand: 'Oner Active', tiktokId: '7668033337017109782', href: 'https://www.tiktok.com/@rubygrifiths/video/7668033337017109782', views: '82.2K', likes: '60', comments: '2,665',
+    id: 'oner-active', title: "It's so normal", creator: '@rubygrifiths', brand: 'Oner Active', tiktokId: '7668033337017109782', href: 'https://www.tiktok.com/@rubygrifiths/video/7668033337017109782', views: '866.8K', likes: '82.5K', comments: '60',
   },
   {
-    id: 'ruggable', title: 'Dining room refresh', creator: '@sierra.honeycutt', brand: 'Ruggable', tiktokId: '7269798843921747243', href: 'https://www.tiktok.com/@sierra.honeycutt/video/7269798843921747243', views: '187.8K', likes: '349', comments: '13.5K',
+    id: 'ruggable', title: 'Dining room refresh', creator: '@sierra.honeycutt', brand: 'Ruggable', tiktokId: '7269798843921747243', href: 'https://www.tiktok.com/@sierra.honeycutt/video/7269798843921747243', views: '2.9M', likes: '187.7K', comments: '349',
   },
   {
-    id: 'skin-favorites', title: 'Everything my skin is loving', creator: '@ladycarolinewiley', brand: 'Laneige / Sunday Riley / rhode', tiktokId: '7666145523795086622', href: 'https://www.tiktok.com/@ladycarolinewiley/video/7666145523795086622', views: 'idk', likes: 'idk', comments: 'idk',
+    id: 'skin-favorites', title: 'Everything my skin is loving', creator: '@ladycarolinewiley', brand: 'Laneige / Sunday Riley / rhode', tiktokId: '7666145523795086622', href: 'https://www.tiktok.com/@ladycarolinewiley/video/7666145523795086622', views: '213K', likes: '17.7K', comments: '116',
   },
   {
-    id: 'rxbar', title: 'Like chewing on a steak', creator: '@fiajames_', brand: 'RXBAR', tiktokId: '7631046012357856525', href: 'https://www.tiktok.com/@fiajames_/video/7631046012357856525', views: 'idk', likes: 'idk', comments: 'idk',
+    id: 'rxbar', title: 'Like chewing on a steak', creator: '@fiajames_', brand: 'RXBAR', tiktokId: '7631046012357856525', href: 'https://www.tiktok.com/@fiajames_/video/7631046012357856525', views: '147.8K', likes: '15.2K', comments: '117',
   },
   {
-    id: 'calpak', title: 'Euro summer packing', creator: '@maddie.eppe', brand: 'CALPAK Travel', tiktokId: '7653190864914746654', href: 'https://www.tiktok.com/@maddie.eppe/video/7653190864914746654', views: '17.6K', likes: '12', comments: '144',
+    id: 'calpak', title: 'Euro summer packing', creator: '@maddie.eppe', brand: 'CALPAK Travel', tiktokId: '7653190864914746654', href: 'https://www.tiktok.com/@maddie.eppe/video/7653190864914746654', views: '125.1K', likes: '17.6K', comments: '144',
   },
   {
-    id: 'kodiak', title: 'High-protein snack', creator: '@joexfitness', brand: 'Kodiak', tiktokId: '7223892996113091882', href: 'https://www.tiktok.com/@joexfitness/video/7223892996113091882', views: '14.5K', likes: '60', comments: '2,342',
+    id: 'kodiak', title: 'High-protein snack', creator: '@joexfitness', brand: 'Kodiak', tiktokId: '7223892996113091882', href: 'https://www.tiktok.com/@joexfitness/video/7223892996113091882', views: '124.3K', likes: '14.5K', comments: '60',
   },
 ]
 

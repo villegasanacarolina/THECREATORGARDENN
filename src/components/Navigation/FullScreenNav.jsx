@@ -35,17 +35,12 @@ const FullScreenNav = () => {
   }
 
   function gsapAnimation() {
-    const isMobile = window.matchMedia('(max-width: 1023px)').matches
     const tl = gsap.timeline()
 
-    if (isMobile) {
-      tl.set('.link', { opacity: 1, rotateX: 0 })
-      tl.set('.navlink', { opacity: 1 })
-      tl.set('.stairing', { height: '100%' })
-      tl.set('.fullscreennav', { display: 'block' })
-      return
-    }
-
+    // Estado inicial forzado (defensa extra, sin importar cómo haya quedado
+    // de una apertura/cierre anterior): links y logo/botón ocultos, listos
+    // para animar. El fondo negro (bg-black en #fullscreennav) ya cubre todo
+    // desde el primer frame, así que nunca hay un instante "a medias".
     tl.set('.link', { opacity: 0, rotateX: 90 })
     tl.set('.navlink', { opacity: 0 })
     tl.to('.fullscreennav', { display: 'block' })
@@ -63,17 +58,7 @@ const FullScreenNav = () => {
   }
 
   function gsapAnimationReverse() {
-    const isMobile = window.matchMedia('(max-width: 1023px)').matches
     const tl = gsap.timeline()
-
-    if (isMobile) {
-      tl.set('.link', { opacity: 0, rotateX: 90 })
-      tl.set('.navlink', { opacity: 0 })
-      tl.set('.stairing', { height: 0 })
-      tl.set('.fullscreennav', { display: 'none' })
-      return
-    }
-
     tl.to('.link', {
       opacity: 0,
       rotateX: 90,
