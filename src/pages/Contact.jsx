@@ -82,10 +82,10 @@ const ContactMobile = ({ scrollDirection }) => (
         <h1 className={`mx-auto max-w-[12ch] ${MOBILE_HEADING_PADDING} text-center font-[font2] text-[14vw] uppercase leading-[0.82]`}>
           To talk<br />about<br />your<br />{scene.subject}
         </h1>
-        <p className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} left-4 max-w-[12rem] text-center font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight`}>
+        <p className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} left-4 max-w-[12rem] rounded-md bg-white px-2 py-1.5 text-center font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight text-black`}>
           Onscreen or in an office.<br />Here. There.<br />Anywhere.
         </p>
-        <a href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco' target='_blank' rel='noreferrer' onClick={() => trackEvent('click', 'address')} className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} right-4 max-w-[15rem] text-right font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight hover:text-[#D9A99B]`}>
+        <a href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco' target='_blank' rel='noreferrer' onClick={() => trackEvent('click', 'address')} className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} right-4 max-w-[15rem] rounded-md bg-white px-2 py-1.5 text-right font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight text-black transition-colors hover:bg-[#D9A99B]`}>
           ITESM Campus Gdl<br />Zapopan, Jalisco →
         </a>
         <ContactTicker scrollDirection={scrollDirection} topClass={MOBILE_TICKER_TOP} />
@@ -123,10 +123,10 @@ const ContactDesktop = ({ scrollDirection }) => (
         <h1 className={`mx-auto max-w-[12ch] ${DESKTOP_HEADING_PADDING} text-center font-[font2] text-[9vw] uppercase leading-[0.82]`}>
           To talk<br />about<br />your<br />{scene.subject}
         </h1>
-        <p className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} left-16 max-w-[12rem] text-center font-[font1] ${DESKTOP_SMALL_TEXT_SIZE} leading-tight`}>
+        <p className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} left-16 max-w-[12rem] rounded-md bg-white px-3 py-2 text-center font-[font1] ${DESKTOP_SMALL_TEXT_SIZE} leading-tight text-black`}>
           Onscreen or in an office.<br />Here. There.<br />Anywhere.
         </p>
-        <a href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco' target='_blank' rel='noreferrer' onClick={() => trackEvent('click', 'address')} className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} right-16 max-w-[15rem] text-right font-[font1] ${DESKTOP_SMALL_TEXT_SIZE} leading-tight hover:text-[#D9A99B]`}>
+        <a href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco' target='_blank' rel='noreferrer' onClick={() => trackEvent('click', 'address')} className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} right-16 max-w-[15rem] rounded-md bg-white px-3 py-2 text-right font-[font1] ${DESKTOP_SMALL_TEXT_SIZE} leading-tight text-black transition-colors hover:bg-[#D9A99B]`}>
           ITESM Campus Gdl<br />Zapopan, Jalisco →
         </a>
         <ContactTicker scrollDirection={scrollDirection} topClass={DESKTOP_TICKER_TOP} />

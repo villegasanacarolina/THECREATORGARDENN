@@ -1,11 +1,11 @@
 import { serviceGroups, serviceIntro } from '../data/site'
 import ContactCta from '../components/common/ContactCta'
-import SectionImage from '../components/common/SectionImage'
+import SectionVideo from '../components/common/SectionVideo'
 
 const Services = () => {
   return (
     <div className='relative min-h-screen overflow-hidden bg-black pb-0 text-white'>
-      <SectionImage src='/images/services.jpg' alt='' />
+      <SectionVideo mobileSrc='/videos/services-mobile.mp4' desktopSrc='/videos/services-desktop.mp4' />
       <section className='relative z-10 px-6 pt-[25vh] lg:px-16'>
         <h1 className='font-[font2] text-6xl uppercase leading-none lg:text-[10vw]'>Services</h1>
         <div className='mt-24 flex flex-col gap-40 lg:gap-64'>
