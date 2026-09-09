@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { CONTACT_EMAIL } from '../data/site'
 import { trackEvent } from '../lib/trackEvent'
+import SectionImage from '../components/common/SectionImage'
 
 const contactScenes = [
   { subject: 'project' },
@@ -28,7 +29,7 @@ const ContactTicker = ({ scrollDirection, topClass }) => {
       }}
       onMouseEnter={() => setInverted(true)}
       onMouseLeave={() => setInverted(false)}
-      className={`contact-ticker absolute ${topClass} left-1/2 z-30 w-[120vw] overflow-hidden py-3 text-left font-[font2] text-[9vw] uppercase leading-none transition-[background-color,transform] duration-700 lg:text-[6vw] ${inverted ? 'bg-white text-black' : 'bg-[#D3FD50] text-black'}`}
+      className={`contact-ticker absolute ${topClass} left-1/2 z-30 w-[120vw] overflow-hidden py-3 text-left font-[font2] text-[9vw] uppercase leading-none transition-[background-color,transform] duration-700 lg:text-[6vw] ${inverted ? 'bg-white text-black' : 'bg-[#D9A99B] text-black'}`}
       style={{
         transform: `translate(${TICKER_OFFSET_X}, -50%) rotate(${rotation}deg)`,
         transformOrigin: 'center center',
@@ -83,7 +84,7 @@ const ContactMobile = ({ scrollDirection }) => (
           target='_blank'
           rel='noreferrer'
           onClick={() => trackEvent('click', 'address')}
-          className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} right-8 max-w-[15rem] text-right font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight hover:text-[#D3FD50]`}
+          className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} right-8 max-w-[15rem] text-right font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight hover:text-[#D9A99B]`}
         >
           ITESM Campus Gdl<br />Zapopan, Jalisco →
         </a>
@@ -130,7 +131,7 @@ const ContactDesktop = ({ scrollDirection }) => (
           target='_blank'
           rel='noreferrer'
           onClick={() => trackEvent('click', 'address')}
-          className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} right-16 max-w-[15rem] text-right font-[font1] ${DESKTOP_SMALL_TEXT_SIZE} leading-tight hover:text-[#D3FD50]`}
+          className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} right-16 max-w-[15rem] text-right font-[font1] ${DESKTOP_SMALL_TEXT_SIZE} leading-tight hover:text-[#D9A99B]`}
         >
           ITESM Campus Gdl<br />Zapopan, Jalisco →
         </a>
@@ -160,10 +161,11 @@ const Contact = () => {
 
   return (
     <main className='bg-black text-white'>
+      <SectionImage src='/images/contact.jpg' alt='' />
       <ContactMobile scrollDirection={scrollDirection} />
       <ContactDesktop scrollDirection={scrollDirection} />
       <footer className='flex flex-wrap items-center justify-between gap-8 border-t border-white/30 px-4 py-8 lg:px-8'>
-        <a href={`mailto:${CONTACT_EMAIL}`} onClick={() => trackEvent('click', 'email')} className='font-[font1] text-sm hover:text-[#D3FD50] lg:text-lg'>{CONTACT_EMAIL}</a>
+        <a href={`mailto:${CONTACT_EMAIL}`} onClick={() => trackEvent('click', 'email')} className='font-[font1] text-sm hover:text-[#D9A99B] lg:text-lg'>{CONTACT_EMAIL}</a>
       </footer>
     </main>
   )

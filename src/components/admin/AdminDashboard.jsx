@@ -14,8 +14,8 @@ import {
   Bar,
 } from 'recharts'
 
-const ACCENT = '#D3FD50'
-const PIE_COLORS = ['#D3FD50', '#8b8b8b', '#4a4a4a', '#ffffff']
+const ACCENT = '#D9A99B'
+const PIE_COLORS = ['#D9A99B', '#8b8b8b', '#4a4a4a', '#ffffff']
 
 const tooltipStyle = {
   backgroundColor: '#0a0a0a',
@@ -99,7 +99,7 @@ const AdminDashboard = ({ stats, onRefresh }) => {
           <button
             type='button'
             onClick={onRefresh}
-            className='rounded-full border border-white/40 px-4 py-2 font-[font1] text-sm hover:border-[#D3FD50] hover:text-[#D3FD50]'
+            className='rounded-full border border-white/40 px-4 py-2 font-[font1] text-sm hover:border-[#D9A99B] hover:text-[#D9A99B]'
           >
             Actualizar
           </button>

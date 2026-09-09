@@ -42,7 +42,7 @@ const AdminLogin = ({ onSuccess }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           autoComplete='username'
-          className='w-full rounded border border-white/30 bg-transparent px-4 py-3 font-[font1] outline-none focus:border-[#D3FD50]'
+          className='w-full rounded border border-white/30 bg-transparent px-4 py-3 font-[font1] outline-none focus:border-[#D9A99B]'
           required
         />
         <input
@@ -51,7 +51,7 @@ const AdminLogin = ({ onSuccess }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoComplete='current-password'
-          className='w-full rounded border border-white/30 bg-transparent px-4 py-3 font-[font1] outline-none focus:border-[#D3FD50]'
+          className='w-full rounded border border-white/30 bg-transparent px-4 py-3 font-[font1] outline-none focus:border-[#D9A99B]'
           required
         />
         {error && <p className='text-sm text-red-400'>{error}</p>}
@@ -66,7 +66,7 @@ const AdminLogin = ({ onSuccess }) => {
         <button
           type='submit'
           disabled={loading}
-          className='w-full rounded-full border-2 border-white py-3 font-[font2] uppercase transition-colors hover:border-[#D3FD50] hover:text-[#D3FD50] disabled:opacity-50'
+          className='w-full rounded-full border-2 border-white py-3 font-[font2] uppercase transition-colors hover:border-[#D9A99B] hover:text-[#D9A99B] disabled:opacity-50'
         >
           {loading ? 'Entrando…' : 'Entrar'}
         </button>
