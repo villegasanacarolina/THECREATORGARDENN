@@ -40,8 +40,8 @@ const ContactTicker = ({ scrollDirection, topClass }) => {
    ============================================================================ */
 const MOBILE_SECTION_HEIGHT = 'min-h-[45vh]'
 const MOBILE_HEADING_PADDING = 'pb-[8vh]'
-const MOBILE_TICKER_TOP = 'top-[78%]'
-const MOBILE_SMALL_TEXT_BOTTOM = 'bottom-[70%]'
+const MOBILE_TICKER_TOP = 'top-[82%]'
+const MOBILE_SMALL_TEXT_BOTTOM = 'bottom-[58%]'
 // 4) TAMAÑO DEL TEXTO PEQUEÑO + LA DIRECCIÓN
 const MOBILE_SMALL_TEXT_SIZE = 'text-[8.4px]'
 
