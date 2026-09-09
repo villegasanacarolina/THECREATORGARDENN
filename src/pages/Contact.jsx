@@ -38,10 +38,10 @@ const ContactTicker = ({ scrollDirection, topClass }) => {
 /* ============================================================================
    VERSIÓN MOBILE — toca SOLO estos 4 valores para ajustar mobile.
    ============================================================================ */
-const MOBILE_SECTION_HEIGHT = 'min-h-[58vh]'
+const MOBILE_SECTION_HEIGHT = 'min-h-[45vh]'
 const MOBILE_HEADING_PADDING = 'pb-[8vh]'
 const MOBILE_TICKER_TOP = 'top-[78%]'
-const MOBILE_SMALL_TEXT_BOTTOM = 'bottom-[10%]'
+const MOBILE_SMALL_TEXT_BOTTOM = 'bottom-[70%]'
 // 4) TAMAÑO DEL TEXTO PEQUEÑO + LA DIRECCIÓN
 const MOBILE_SMALL_TEXT_SIZE = 'text-[8.4px]'
 
