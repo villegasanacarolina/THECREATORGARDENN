@@ -85,13 +85,7 @@ const ContactMobile = ({ scrollDirection }) => (
         <p className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} left-4 max-w-[12rem] text-center font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight`}>
           Onscreen or in an office.<br />Here. There.<br />Anywhere.
         </p>
-        
-          href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco'
-          target='_blank'
-          rel='noreferrer'
-          onClick={() => trackEvent('click', 'address')}
-          className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} right-4 max-w-[15rem] text-right font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight hover:text-[#D9A99B]`}
-        >
+        <a href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco' target='_blank' rel='noreferrer' onClick={() => trackEvent('click', 'address')} className={`absolute ${MOBILE_SMALL_TEXT_BOTTOM} right-4 max-w-[15rem] text-right font-[font1] ${MOBILE_SMALL_TEXT_SIZE} leading-tight hover:text-[#D9A99B]`}>
           ITESM Campus Gdl<br />Zapopan, Jalisco →
         </a>
         <ContactTicker scrollDirection={scrollDirection} topClass={MOBILE_TICKER_TOP} />
@@ -132,13 +126,7 @@ const ContactDesktop = ({ scrollDirection }) => (
         <p className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} left-16 max-w-[12rem] text-center font-[font1] ${DESKTOP_SMALL_TEXT_SIZE} leading-tight`}>
           Onscreen or in an office.<br />Here. There.<br />Anywhere.
         </p>
-        
-          href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco'
-          target='_blank'
-          rel='noreferrer'
-          onClick={() => trackEvent('click', 'address')}
-          className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} right-16 max-w-[15rem] text-right font-[font1] ${DESKTOP_SMALL_TEXT_SIZE} leading-tight hover:text-[#D9A99B]`}
-        >
+        <a href='https://maps.google.com/?q=ITESM+Campus+Gdl+Zapopan+Jalisco' target='_blank' rel='noreferrer' onClick={() => trackEvent('click', 'address')} className={`absolute ${DESKTOP_SMALL_TEXT_BOTTOM} right-16 max-w-[15rem] text-right font-[font1] ${DESKTOP_SMALL_TEXT_SIZE} leading-tight hover:text-[#D9A99B]`}>
           ITESM Campus Gdl<br />Zapopan, Jalisco →
         </a>
         <ContactTicker scrollDirection={scrollDirection} topClass={DESKTOP_TICKER_TOP} />
