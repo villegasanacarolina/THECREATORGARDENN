@@ -4,11 +4,13 @@ const AdminLogin = ({ onSuccess }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [debug, setDebug] = useState(null)
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    setDebug(null)
     setLoading(true)
     try {
       const res = await fetch('/api/admin-login', {
@@ -19,6 +21,7 @@ const AdminLogin = ({ onSuccess }) => {
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
         setError(data.error || 'No se pudo iniciar sesión')
+        if (data.debug) setDebug(data.debug)
         setLoading(false)
         return
       }
@@ -52,6 +55,14 @@ const AdminLogin = ({ onSuccess }) => {
           required
         />
         {error && <p className='text-sm text-red-400'>{error}</p>}
+        {debug && (
+          <div className='rounded border border-red-400/40 bg-red-400/10 p-3 font-[font1] text-xs text-red-300'>
+            <p>email coincide: {String(debug.emailMatches)}</p>
+            <p>contraseña coincide: {String(debug.passwordMatches)}</p>
+            <p>largo escrito (correo): {debug.typedEmailLength} — guardado: {debug.storedEmailLength}</p>
+            <p>largo escrito (contraseña): {debug.typedPasswordLength} — guardado: {debug.storedPasswordLength}</p>
+          </div>
+        )}
         <button
           type='submit'
           disabled={loading}

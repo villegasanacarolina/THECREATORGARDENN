@@ -7,8 +7,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const adminEmail = process.env.ADMIN_EMAIL
-    const adminPassword = process.env.ADMIN_PASSWORD
+    const adminEmail = (process.env.ADMIN_EMAIL || '').trim()
+    const adminPassword = (process.env.ADMIN_PASSWORD || '').trim()
     const jwtSecret = process.env.JWT_SECRET
 
     const missing = []
@@ -28,11 +28,24 @@ export default async function handler(req, res) {
       return
     }
 
-    const emailMatches = email.trim().toLowerCase() === adminEmail.trim().toLowerCase()
-    const passwordMatches = password === adminPassword
+    const typedEmail = email.trim().toLowerCase()
+    const typedPassword = password.trim()
+
+    const emailMatches = typedEmail === adminEmail.toLowerCase()
+    const passwordMatches = typedPassword === adminPassword
 
     if (!emailMatches || !passwordMatches) {
-      res.status(401).json({ error: 'Credenciales inválidas' })
+      res.status(401).json({
+        error: 'Credenciales inválidas',
+        debug: {
+          emailMatches,
+          passwordMatches,
+          typedEmailLength: typedEmail.length,
+          storedEmailLength: adminEmail.length,
+          typedPasswordLength: typedPassword.length,
+          storedPasswordLength: adminPassword.length,
+        },
+      })
       return
     }
 
