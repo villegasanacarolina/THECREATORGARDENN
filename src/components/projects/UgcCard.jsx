@@ -3,13 +3,7 @@ import { trackEvent } from '../../lib/trackEvent'
 const UgcCard = ({ project }) => {
   return (
     <article className="flex h-full flex-col">
-      <a
-        href={project.href}
-        target="_blank"
-        rel="noreferrer"
-        onClick={() => trackEvent('click', 'project', { project: project.id, creator: project.creator, brand: project.brand })}
-        className="group relative block aspect-[9/16] overflow-hidden rounded-none bg-black transition-all hover:rounded-[40px]"
-      >
+      <a href={project.href} target="_blank" rel="noreferrer" onClick={() => trackEvent('click', 'project', { project: project.id, creator: project.creator, brand: project.brand })} className="group relative block aspect-[9/16] overflow-hidden rounded-none bg-black transition-all hover:rounded-[40px]">
         <iframe
           className="pointer-events-none h-full w-full"
           src={`https://www.tiktok.com/player/v1/${project.tiktokId}?description=1&music_info=0`}

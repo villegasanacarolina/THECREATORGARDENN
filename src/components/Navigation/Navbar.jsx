@@ -39,12 +39,12 @@ const Navbar = () => {
         onClick={() => setNavOpen(true)}
         onMouseEnter={() => { navGreenRef.current.style.height = '100%' }}
         onMouseLeave={() => { navGreenRef.current.style.height = '0%' }}
-        className='relative h-[clamp(2.5rem,4vw,4rem)] w-[clamp(12rem,30vw,15rem)] border-0 bg-black p-0'
+        className='relative h-[clamp(2.5rem,4vw,4rem)] w-[clamp(12rem,30vw,15rem)] border-0 bg-white p-0'
       >
         <div ref={navGreenRef} className='bg-[#D9A99B] transition-all absolute top-0 h-0 w-full'></div>
         <div className='relative h-full flex flex-col justify-center items-end gap-0.5 px-8 lg:gap-1.5 lg:px-12'>
-          <div className='h-0.5 w-[clamp(3rem,6vw,4.5rem)] bg-white'></div>
-          <div className='h-0.5 w-[clamp(1.5rem,4vw,2.5rem)] bg-white'></div>
+          <div className='h-0.5 w-[clamp(3rem,6vw,4.5rem)] bg-black'></div>
+          <div className='h-0.5 w-[clamp(1.5rem,4vw,2.5rem)] bg-black'></div>
         </div>
       </button>
     </div>
