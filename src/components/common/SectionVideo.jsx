@@ -4,17 +4,21 @@ import { useEffect, useRef } from 'react'
 // de 1024px o más. El navegador elige la fuente UNA sola vez al cargar la
 // página (no cambia si luego resizeas la ventana) — comportamiento normal
 // y esperado de <video><source media="..."></video>.
-const SectionVideo = ({ mobileSrc, desktopSrc }) => {
+//
+// poster (opcional): una imagen estática que se muestra INSTANTÁNEO mientras
+// el video pesado sigue cargando, en vez de ver la pantalla en negro/vacía
+// todo ese tiempo. Recomendado si tus videos son grandes.
+const SectionVideo = ({ mobileSrc, desktopSrc, poster }) => {
   const videoRef = useRef(null)
 
   useEffect(() => {
-    // Con React, las <source> se insertan de forma dinámica (no vienen ya
-    // en el HTML que el navegador parsea de entrada) — varios navegadores
-    // no vuelven a evaluar cuál fuente usar a menos que se les pida
-    // explícitamente. Sin este .load(), el video puede quedarse sin ninguna
-    // fuente seleccionada y mostrarse en negro.
+    // Ya NO llamamos .load() aquí: como las <source> ya vienen presentes
+    // desde el primer render (no se agregan después), el navegador arranca
+    // la descarga correctamente solo. Forzar .load() reiniciaba esa
+    // descarga desde cero, lo cual es justo lo que causaba la demora extra
+    // en videos pesados. Solo dejamos play() como red de seguridad para
+    // el autoplay.
     if (videoRef.current) {
-      videoRef.current.load()
       videoRef.current.play().catch(() => {})
     }
   }, [mobileSrc, desktopSrc])
@@ -33,6 +37,7 @@ const SectionVideo = ({ mobileSrc, desktopSrc }) => {
         loop
         playsInline
         preload='auto'
+        poster={poster}
         aria-hidden='true'
       >
         {desktopSrc && <source src={desktopSrc} media='(min-width: 1024px)' type='video/mp4' />}
