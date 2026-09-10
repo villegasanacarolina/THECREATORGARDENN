@@ -1,11 +1,11 @@
 import { approachBlocks } from '../data/site'
 import ContactCta from '../components/common/ContactCta'
-import SectionVideo from '../components/common/SectionVideo'
+import SectionImage from '../components/common/SectionImage'
 
 const Approach = () => {
   return (
-    <div className='relative min-h-screen overflow-hidden bg-black pb-0 text-black'>
-      <SectionVideo mobileSrc='/videos/approach-mobile.mp4' desktopSrc='/videos/approach-desktop.mp4' />
+    <div className='relative min-h-screen overflow-hidden bg-black pb-0 text-black lg:text-white'>
+      <SectionImage mobileSrc='/images/approach.jpg' desktopSrc='/images/approach.jpg' alt='' />
       <div className='relative z-10 px-6 pt-[25vh] lg:px-16'>
         <h1 className='font-[font2] text-6xl uppercase leading-none lg:text-[10vw]'>Our approach</h1>
       </div>
