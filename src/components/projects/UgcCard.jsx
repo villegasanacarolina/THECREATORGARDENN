@@ -1,12 +1,22 @@
 import { trackEvent } from '../../lib/trackEvent'
 
+// Instagram usa un iframe de embed distinto al de TikTok. project.platform
+// decide cuál se usa; si no se especifica, se asume 'tiktok' (compatibilidad
+// con los proyectos existentes que no tienen este campo).
+const getEmbedSrc = (project) => {
+  if (project.platform === 'instagram') {
+    return `https://www.instagram.com/reel/${project.instagramId}/embed`
+  }
+  return `https://www.tiktok.com/player/v1/${project.tiktokId}?description=1&music_info=0`
+}
+
 const UgcCard = ({ project }) => {
   return (
     <article className="flex h-full flex-col">
       <a href={project.href} target="_blank" rel="noreferrer" onClick={() => trackEvent('click', 'project', { project: project.id, creator: project.creator, brand: project.brand })} className="group relative block aspect-[9/16] overflow-hidden rounded-none bg-black transition-all hover:rounded-[40px]">
         <iframe
           className="pointer-events-none h-full w-full"
-          src={`https://www.tiktok.com/player/v1/${project.tiktokId}?description=1&music_info=0`}
+          src={getEmbedSrc(project)}
           title={`${project.title} by ${project.creator}`}
           allow="fullscreen"
         />

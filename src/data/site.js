@@ -2,7 +2,7 @@ export const CONTACT_EMAIL = 'thecreatorgardenn@gmail.com'
 
 export const projects = [
   {
-    id: 'charlotte-tilbury', title: 'What not to do', creator: '@milasmosaic', brand: 'Huda Beauty', tiktokId: '7637933872218393877', href: 'https://www.tiktok.com/@milasmosaic/video/7637933872218393877', views: '380K', likes: '22.1k', comments: '56',
+    id: 'reel-1', title: 'GROUPCHAT', creator: '@walkingwithkat', brand: 'Stompers', platform: 'instagram', instagramId: 'DcjTPInpa60', href: 'https://www.instagram.com/reel/DcjTPInpa60/', views: '3.4M', likes: '84.2K', comments: '506',
   },
   {
     id: 'based-shave', title: 'Shave with me', creator: '@nathanbaarss', brand: 'BASED', tiktokId: '7649924012407115021', href: 'https://www.tiktok.com/@nathanbaarss/video/7649924012407115021', views: '1.9M', likes: '127.9K', comments: '597',
@@ -17,7 +17,7 @@ export const projects = [
     id: 'lovable', title: 'Lovable is the summer job', creator: '@2jaygee', brand: 'Lovable', tiktokId: '7659985033561754893', href: 'https://www.tiktok.com/@2jaygee/video/7659985033561754893', views: '1.5M', likes: '118K', comments: '672',
   },
   {
-    id: 'gymshark', title: 'Would you look at that', creator: '@james_beardwell', brand: 'Gymshark', tiktokId: '7499110677072629014', href: 'https://www.tiktok.com/@james_beardwell/video/7499110677072629014', views: '13M', likes: '1.2M', comments: '3047',
+    id: 'reel-2', title: 'Dating an IT guy', creator: '@rash.earns', brand: 'Lovable', platform: 'instagram', instagramId: 'DcB6RC1M5Ea', href: 'https://www.instagram.com/reel/DcB6RC1M5Ea/', views: '2.1M', likes: '107K', comments: '359',
   },
   {
     id: 'ketjap-manis', title: 'Enough with the ketjap manis', creator: '@freeloading_chaz', brand: 'idk', tiktokId: '7600538039550577942', href: 'https://www.tiktok.com/@freeloading_chaz/video/7600538039550577942', views: '3.2M', likes: '225.7K', comments: '1188',
@@ -32,7 +32,7 @@ export const projects = [
     id: 'ruggable', title: 'Dining room refresh', creator: '@sierra.honeycutt', brand: 'Ruggable', tiktokId: '7269798843921747243', href: 'https://www.tiktok.com/@sierra.honeycutt/video/7269798843921747243', views: '2.9M', likes: '187.7K', comments: '349',
   },
   {
-    id: 'skin-favorites', title: 'Everything my skin is loving', creator: '@ladycarolinewiley', brand: 'Laneige / Sunday Riley / rhode', tiktokId: '7666145523795086622', href: 'https://www.tiktok.com/@ladycarolinewiley/video/7666145523795086622', views: '213K', likes: '17.7K', comments: '116',
+    id: 'reel-3', title: 'Crazy alarm', creator: '@olimpia_sleep', brand: 'Tock App', platform: 'tiktok', tiktokId: '7676381949966994708', href: 'https://www.tiktok.com/@olimpia_sleep/video/7676381949966994708', views: '677.2K', likes: '29K', comments: '235',
   },
   {
     id: 'rxbar', title: 'Like chewing on a steak', creator: '@fiajames_', brand: 'RXBAR', tiktokId: '7631046012357856525', href: 'https://www.tiktok.com/@fiajames_/video/7631046012357856525', views: '147.8K', likes: '15.2K', comments: '117',
@@ -54,10 +54,10 @@ export const approachBlocks = [
     text: 'What truly sets us apart is our commitment to deeply understanding the brands we work with. Empathy guides everything we do, allowing us to craft innovative, tailored solutions that feel authentic.',
   },
   {
-    text: 'We believe a strong idea needs flawless execution to thrive, and execution alone isn’t enough without a powerful idea driving it. That balance is at the heart of our approach.',
+    text: "We believe a strong idea needs flawless execution to thrive, and execution alone isn't enough without a powerful idea driving it. That balance is at the heart of our approach.",
   },
   {
-    text: 'We immerse ourselves fully in a brand’s DNA, bringing their story to life in ways that are original and purposeful, helping them stand out and succeed in the digital landscape.',
+    text: "We immerse ourselves fully in a brand's DNA, bringing their story to life in ways that are original and purposeful, helping them stand out and succeed in the digital landscape.",
   },
 ]
 
