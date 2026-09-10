@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useContext, useEffect, useState } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
@@ -9,15 +9,28 @@ import Navbar from './components/Navigation/Navbar'
 import FullScreenNav from './components/Navigation/FullScreenNav'
 import Stairs from './components/common/Stairs'
 import useTrackPageview from './hooks/useTrackPageview'
+import { NavbarContext } from './context/NavContext'
 
 // Cargado bajo demanda: /admin trae su propia librería de gráficas
 // (recharts), así que solo se descarga cuando alguien de verdad entra ahí
 // — el resto de los visitantes nunca paga ese peso extra.
 const Admin = lazy(() => import('./pages/Admin'))
 
+// Igual que Admin: three.js (la animación 3D) solo se descarga cuando hace
+// falta — al entrar a Home, o al abrir el menú desde cualquier otra página.
+const GardenScene = lazy(() => import('./components/garden/GardenScene'))
+
 const App = () => {
   const { pathname } = useLocation()
+  const [navOpen] = useContext(NavbarContext)
+  const [hasOpenedGarden, setHasOpenedGarden] = useState(false)
   useTrackPageview()
+
+  const isHome = pathname === '/'
+
+  useEffect(() => {
+    if (isHome || navOpen) setHasOpenedGarden(true)
+  }, [isHome, navOpen])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -72,6 +85,20 @@ const App = () => {
         la ventana, sin importar el scroll ni las transiciones de página.
       */}
       <Navbar />
+      {/*
+        Una sola instancia de la animación 3D, compartida entre Home y el
+        menú — así nunca se carga el modelo dos veces. Cuando el menú está
+        cerrado vive detrás de todo (z-0, sirve de fondo en Home); cuando se
+        abre, sube por encima del contenido de la página pero sigue debajo
+        del texto del menú (z-45 < z-50 del menú).
+      */}
+      <Suspense fallback={null}>
+        {hasOpenedGarden && (
+          <div className={`pointer-events-none fixed inset-0 ${navOpen ? 'z-[45]' : 'z-0'}`}>
+            <GardenScene initialize />
+          </div>
+        )}
+      </Suspense>
       <FullScreenNav />
       <Stairs>
         <Routes>

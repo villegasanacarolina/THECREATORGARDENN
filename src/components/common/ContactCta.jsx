@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import HeartIcon from './HeartIcon'
 
 const ContactCta = () => {
   return (
@@ -7,7 +8,7 @@ const ContactCta = () => {
         to='/contact'
         className='flex items-center rounded-full border-2 border-white px-8 py-3 font-[font2] text-5xl uppercase leading-none transition-colors hover:border-[#D9A99B] hover:text-[#D9A99B] lg:px-16 lg:text-8xl'
       >
-        Contact <span className='ml-4 text-4xl lg:text-7xl'>♥</span>
+        Contact <HeartIcon className='ml-4 inline-block h-[0.7em] w-[0.7em] align-middle' />
       </Link>
     </section>
   )

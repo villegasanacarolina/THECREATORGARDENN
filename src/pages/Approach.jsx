@@ -1,11 +1,11 @@
 import { approachBlocks } from '../data/site'
 import ContactCta from '../components/common/ContactCta'
-import SectionImage from '../components/common/SectionImage'
+import SectionVideo from '../components/common/SectionVideo'
 
 const Approach = () => {
   return (
-    <div className='relative min-h-screen overflow-hidden bg-black pb-0 text-black lg:text-black'>
-      <SectionImage mobileSrc='/images/DALI-Mobile.jpg' desktopSrc='/images/DALI-Desktop.jpg' alt='' />
+    <div className='relative min-h-screen overflow-hidden bg-black pb-0 text-black'>
+      <SectionVideo mobileSrc='/videos/APPROACH-Mobile.mp4' desktopSrc='/videos/APPROACH-Desktop.mp4' />
       <div className='relative z-10 px-6 pt-[25vh] lg:px-16'>
         <h1 className='font-[font2] text-6xl uppercase leading-none lg:text-[10vw]'>Our approach</h1>
       </div>
