@@ -4,7 +4,7 @@ import SectionVideo from '../components/common/SectionVideo'
 
 const Services = () => {
   return (
-    <div className='relative min-h-screen overflow-hidden bg-black pb-0 text-white'>
+    <div className='relative min-h-screen overflow-hidden bg-black pb-0 text-black'>
       <SectionVideo mobileSrc='/videos/ELEFANTES-Mobile.mp4' desktopSrc='/videos/ELEFANTES-Desktop.mp4' />
       <section className='relative z-10 px-6 pt-[25vh] lg:px-16'>
         <h1 className='font-[font2] text-6xl uppercase leading-none lg:text-[10vw]'>Services</h1>
