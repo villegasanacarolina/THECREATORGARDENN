@@ -1,5 +1,6 @@
 import UgcCard from '../components/projects/UgcCard'
 import ContactCta from '../components/common/ContactCta'
+import TouchSmokeText from '../components/garden/TouchSmokeText'
 import { projects } from '../data/site'
 
 const Projects = () => {
@@ -8,7 +9,7 @@ const Projects = () => {
       <div className='bg-white p-2 pb-12 lg:p-4'>
         <div className='pt-[28vh] pb-0'>
           <h1 className='font-[font2] text-8xl uppercase leading-none lg:text-[11vw]'>
-            Work <sup className='align-super text-[0.22em]'>14</sup>
+            <TouchSmokeText text='Work' /> <sup className='align-super text-[0.22em]'>{projects.length}</sup>
           </h1>
         </div>
         <div className='grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3'>

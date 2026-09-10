@@ -19,11 +19,14 @@ const Admin = lazy(() => import('./pages/Admin'))
 // Igual que Admin: three.js (la animación 3D) solo se descarga cuando hace
 // falta — al entrar a Home, o al abrir el menú desde cualquier otra página.
 const GardenScene = lazy(() => import('./components/garden/GardenScene'))
+const LoadingScreen = lazy(() => import('./components/garden/LoadingScreen'))
 
 const App = () => {
   const { pathname } = useLocation()
   const [navOpen] = useContext(NavbarContext)
   const [hasOpenedGarden, setHasOpenedGarden] = useState(false)
+  const [gardenProgress, setGardenProgress] = useState(0)
+  const [gardenReady, setGardenReady] = useState(false)
   useTrackPageview()
 
   const isHome = pathname === '/'
@@ -73,7 +76,7 @@ const App = () => {
   }, [])
 
   return (
-    <div className='overflow-x-hidden'>
+    <div className='overflow-x-clip'>
       {/*
         Navbar y FullScreenNav viven FUERA de Stairs a propósito: Stairs le
         aplica un transform (scale) a todo lo que envuelve para la animación
@@ -95,9 +98,10 @@ const App = () => {
       <Suspense fallback={null}>
         {hasOpenedGarden && (
           <div className={`pointer-events-none fixed inset-0 ${navOpen ? 'z-[45]' : 'z-0'}`}>
-            <GardenScene initialize />
+            <GardenScene initialize onProgress={setGardenProgress} onReady={() => setGardenReady(true)} />
           </div>
         )}
+        {isHome && <LoadingScreen progress={gardenProgress} ready={gardenReady} />}
       </Suspense>
       <FullScreenNav />
       <Stairs>

@@ -10,11 +10,12 @@ import { vertexShader, fragmentShader } from '../../lib/gardenShaders'
 // una malla 3D con textura "plaster" que se revela con color al pasar el
 // mouse (o el recorrido automático), simulando esporas/organismo respirando.
 //
-// initialize: no monta el WebGL hasta que sea true (se abre el menú la
-// primera vez) — así no se gasta carga/GPU en visitantes que nunca abren el
-// menú. Una vez montado, sigue vivo y renderizando aunque el menú se cierre
-// después (por eso "no desaparece" al reabrir: no hay que recargar nada).
-const GardenScene = ({ initialize }) => {
+// initialize: no monta el WebGL hasta que sea true. Una vez montado, sigue
+// vivo y renderizando (por eso "no desaparece" al reabrir el menú o volver
+// a Home: no hay que recargar nada).
+// onProgress(0-100) / onReady(): para mostrar una barra de carga mientras
+// se descarga el modelo, en vez de dejar la pantalla vacía sin avisar nada.
+const GardenScene = ({ initialize, onProgress, onReady }) => {
   const containerRef = useRef(null)
   const mountedRef = useRef(false)
 
@@ -36,11 +37,20 @@ const GardenScene = ({ initialize }) => {
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.01, 1000)
     camera.position.set(0, 0, 10)
 
-    const textureLoader = new THREE.TextureLoader()
-    const loader = new GLTFLoader()
-    const draco = new DRACOLoader()
+    // Manager para reportar el progreso real de descarga (modelo + plaster)
+    // a quien esté mostrando la barra de carga.
+    const manager = new THREE.LoadingManager()
+    manager.onProgress = (_url, loaded, total) => {
+      onProgress?.(Math.min(100, Math.round((loaded / total) * 100)))
+    }
+
+    const textureLoader = new THREE.TextureLoader(manager)
+    const loader = new GLTFLoader(manager)
+    const draco = new DRACOLoader(manager)
+    // Decodificador local (copiado de node_modules) en vez del CDN externo
+    // de Google — evita una conexión externa extra que alargaba la carga.
     draco.setDecoderConfig({ type: 'js' })
-    draco.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
+    draco.setDecoderPath('/draco/')
     loader.setDRACOLoader(draco)
 
     const trailTexture = new TrailTexture({
@@ -135,6 +145,7 @@ const GardenScene = ({ initialize }) => {
         }
       })
       scene.add(gltf.scene)
+      onReady?.()
     })
 
     const handleResize = () => {
@@ -172,7 +183,7 @@ const GardenScene = ({ initialize }) => {
       renderer.dispose()
       container.removeChild(renderer.domElement)
     }
-  }, [initialize])
+  }, [initialize, onProgress, onReady])
 
   return <div ref={containerRef} className="pointer-events-none absolute inset-0 h-full w-full" />
 }

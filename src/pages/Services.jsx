@@ -13,7 +13,7 @@ const Services = () => {
           {[serviceIntro.left, serviceIntro.right].map((text) => (
             <section key={text} className='relative z-10 isolate overflow-hidden px-6 py-16'>
               <div className='relative w-full max-w-[19rem]'>
-                <p className='font-[font1] text-xl leading-relaxed lg:text-2xl'>{text}</p>
+                <p className='font-[font1] font-medium text-[2.5rem] leading-tight lg:text-[3rem]'>{text}</p>
               </div>
             </section>
           ))}

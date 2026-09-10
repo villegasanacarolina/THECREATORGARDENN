@@ -18,7 +18,7 @@ const Approach = () => {
               className={`relative z-10 isolate overflow-hidden px-6 py-16 lg:px-16 ${right ? 'lg:flex lg:justify-end' : ''}`}
             >
               <div className={`relative w-full max-w-[19rem] ${right ? 'ml-auto text-right' : ''}`}>
-                <p className='font-[font1] text-xl leading-relaxed lg:text-2xl'>{block.text}</p>
+                <p className='font-[font1] font-medium text-[2.5rem] leading-tight lg:text-[3rem]'>{block.text}</p>
               </div>
             </section>
           )

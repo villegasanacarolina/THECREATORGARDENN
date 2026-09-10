@@ -33,6 +33,16 @@ const FullScreenNav = () => {
     }, NAVIGATE_DELAY_MS)
   }
 
+  // Close siempre regresa a Home, sin importar en qué página estabas
+  // cuando abriste el menú.
+  function closeMenu() {
+    clearTimeout(navigateTimeoutRef.current)
+    setActiveIndex(null)
+    window.scrollTo(0, 0)
+    navigate('/')
+    setNavOpen(false)
+  }
+
   function gsapAnimation() {
     const tl = gsap.timeline()
     tl.set('.nav-link-item', { opacity: 0, y: 20 })
@@ -61,8 +71,8 @@ const FullScreenNav = () => {
       <button
         type='button'
         aria-label='Close menu'
-        onClick={() => setNavOpen(false)}
-        className='absolute right-5 top-5 z-10 font-[font3] text-[clamp(0.9rem,1.4vw,1.1rem)] uppercase tracking-wide text-black transition-colors hover:text-[#D9A99B] lg:right-10 lg:top-10'
+        onClick={closeMenu}
+        className='absolute right-5 top-5 z-10 font-[font3] text-[clamp(0.9rem,1.4vw,1.1rem)] uppercase tracking-wide text-black/70 transition-colors hover:text-black lg:right-10 lg:top-10'
       >
         Close
       </button>
