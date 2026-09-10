@@ -2,7 +2,7 @@ export const CONTACT_EMAIL = 'thecreatorgardenn@gmail.com'
 
 export const projects = [
   {
-    id: 'reel-1', title: 'GROUPCHAT', creator: '@walkingwithkat', brand: 'Stompers', platform: 'instagram', instagramId: 'DcjTPInpa60', href: 'https://www.instagram.com/reel/DcjTPInpa60/', views: '3.4M', likes: '84.2K', comments: '506',
+    id: 'crazy-alarm-milena', title: 'Crazy Alarm', creator: '@milenawakeup', brand: 'Wecker', tiktokId: '7639395865500667169', href: 'https://www.tiktok.com/@milenawakeup/video/7639395865500667169', views: '3.6M', likes: '141.9K', comments: '2676',
   },
   {
     id: 'based-shave', title: 'Shave with me', creator: '@nathanbaarss', brand: 'BASED', tiktokId: '7649924012407115021', href: 'https://www.tiktok.com/@nathanbaarss/video/7649924012407115021', views: '1.9M', likes: '127.9K', comments: '597',
@@ -11,16 +11,16 @@ export const projects = [
     id: 'based-lotion', title: 'Based body lotion', creator: '@nathanbaarss', brand: 'BASED', tiktokId: '7600836108548607287', href: 'https://www.tiktok.com/@nathanbaarss/video/7600836108548607287', views: '135.9K', likes: '4997', comments: '38',
   },
   {
-    id: 'claude-replit', title: 'Most thoughtful thing', creator: '@allys.lockedin', brand: 'idk', tiktokId: '7650605771603971342', href: 'https://www.tiktok.com/@allys.lockedin/video/7650605771603971342', views: '3.5M', likes: '187.8K', comments: '344',
+    id: 'side-hustle', title: 'Side Hustle', creator: '@remymakesmoney', brand: 'Benjamin', tiktokId: '7629018791803964702', href: 'https://www.tiktok.com/@remymakesmoney/video/7629018791803964702', views: '846.2K', likes: '47.6K', comments: '1062',
   },
   {
     id: 'lovable', title: 'Lovable is the summer job', creator: '@2jaygee', brand: 'Lovable', tiktokId: '7659985033561754893', href: 'https://www.tiktok.com/@2jaygee/video/7659985033561754893', views: '1.5M', likes: '118K', comments: '672',
   },
   {
-    id: 'reel-2', title: 'Dating an IT guy', creator: '@rash.earns', brand: 'Lovable', platform: 'instagram', instagramId: 'DcB6RC1M5Ea', href: 'https://www.instagram.com/reel/DcB6RC1M5Ea/', views: '2.1M', likes: '107K', comments: '359',
+    id: 'cucina-italiana', title: 'Cucina Italiana', creator: '@cookedbynic', brand: 'Clove', tiktokId: '7671924359086279957', href: 'https://www.tiktok.com/@cookedbynic/video/7671924359086279957', views: '2.2M', likes: '33K', comments: '148',
   },
   {
-    id: 'ketjap-manis', title: 'Enough with the ketjap manis', creator: '@freeloading_chaz', brand: 'idk', tiktokId: '7600538039550577942', href: 'https://www.tiktok.com/@freeloading_chaz/video/7600538039550577942', views: '3.2M', likes: '225.7K', comments: '1188',
+    id: 'liver-cleanse', title: 'Cleansing your liver', creator: '@healingwithjulianne', brand: 'Sobo Best Friend', tiktokId: '7639012077574671646', href: 'https://www.tiktok.com/@healingwithjulianne/video/7639012077574671646', views: '8.9M', likes: '928.6K', comments: '3429',
   },
   {
     id: 'pureology', title: 'Best hair behavior', creator: '@oliviadaytonn', brand: 'Pureology', tiktokId: '7634643587623390494', href: 'https://www.tiktok.com/@oliviadaytonn/video/7634643587623390494', views: '22.4M', likes: '165.4K', comments: '103',
