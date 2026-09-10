@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { CONTACT_EMAIL } from '../data/site'
 import { trackEvent } from '../lib/trackEvent'
-import SectionImage from '../components/common/SectionImage'
+import SectionVideo from '../components/common/SectionVideo'
 
 const contactScenes = [
   { subject: 'project' },
@@ -155,7 +155,7 @@ const Contact = () => {
 
   return (
     <main className='bg-black text-white'>
-      <SectionImage src='/images/contact.jpg' alt='' />
+      <SectionVideo mobileSrc='/videos/ZEBRA-Mobile.mp4' desktopSrc='/videos/ZEBRA-Desktop.mp4' />
       <ContactMobile scrollDirection={scrollDirection} />
       <ContactDesktop scrollDirection={scrollDirection} />
       <footer className='flex flex-wrap items-center justify-between gap-8 border-t border-white/30 px-4 py-8 lg:px-8'>
