@@ -5,7 +5,7 @@ import SectionImage from '../components/common/SectionImage'
 const Approach = () => {
   return (
     <div className='relative min-h-screen overflow-hidden bg-black pb-0 text-black lg:text-white'>
-      <SectionImage mobileSrc='/images/approach.jpg' desktopSrc='/images/approach.jpg' alt='' />
+      <SectionImage mobileSrc='/images/approach-mobile.jpg' desktopSrc='/images/approach-desktop.jpg' alt='' />
       <div className='relative z-10 px-6 pt-[25vh] lg:px-16'>
         <h1 className='font-[font2] text-6xl uppercase leading-none lg:text-[10vw]'>Our approach</h1>
       </div>
