@@ -58,20 +58,21 @@ const FullScreenNav = () => {
     setActiveIndex(null)
     setLeavingIndex(null)
 
-    // Close must always return to the original Home state without replaying
-    // the loading screen. Route state is the reliable signal for a newly
-    // mounted Home; the custom event covers Home when it is already mounted.
-    setNavOpen(false)
-
+    // Navigate first, then close the overlay. This avoids the closing GSAP
+    // animation hiding/intercepting the control before React Router receives
+    // the navigation. Home consumes forceHomeIntro without touching App's
+    // loader state, so the 3D loading bar is never replayed.
     if (window.location.pathname === '/') {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
       window.dispatchEvent(new Event('tcg:reset-home'))
+      setNavOpen(false)
       return
     }
 
     navigate('/', {
       state: { forceHomeIntro: true, closeNonce: Date.now() },
     })
+    window.requestAnimationFrame(() => setNavOpen(false))
   }
 
   const gsapAnimation = () => {
@@ -97,7 +98,7 @@ const FullScreenNav = () => {
 
   return (
     <div id='fullscreennav' className='fullscreennav isolate fixed inset-0 z-50 hidden overflow-hidden bg-transparent'>
-      <div className='absolute right-5 top-5 z-10 flex items-center gap-2 lg:right-10 lg:top-10 lg:gap-3'>
+      <div className='pointer-events-auto absolute right-5 top-5 z-30 flex items-center gap-2 lg:right-10 lg:top-10 lg:gap-3'>
         <button
           type='button'
           aria-label={muted ? 'Activar sonido' : 'Desactivar sonido'}
@@ -117,11 +118,11 @@ const FullScreenNav = () => {
         </button>
       </div>
 
-      <div className='relative z-10 flex h-dvh flex-col items-center justify-center gap-1 px-4 lg:gap-2 lg:px-6'>
+      <div className='pointer-events-none relative z-10 flex h-dvh flex-col items-center justify-center gap-1 px-4 lg:gap-2 lg:px-6'>
         {links.map((item, index) => (
           <div
             key={item.to}
-            className='nav-link-item flex min-h-[5.4rem] w-full cursor-pointer items-center justify-center text-center font-[font3] text-[clamp(2.35rem,7vw,5.5rem)] leading-none text-black lg:min-h-[7rem]'
+            className='nav-link-item pointer-events-auto flex min-h-[5.4rem] w-full cursor-pointer items-center justify-center text-center font-[font3] text-[clamp(2.35rem,7vw,5.5rem)] leading-none text-black lg:min-h-[7rem]'
             onPointerEnter={(event) => {
               if (event.pointerType === 'mouse' && leavingIndex === null) {
                 setActiveIndex(index)
@@ -145,7 +146,7 @@ const FullScreenNav = () => {
       </div>
 
       <div
-        className='nav-link-item absolute bottom-5 left-5 z-10 cursor-pointer font-[font1] text-sm text-black transition-colors hover:text-black/60 lg:bottom-10 lg:left-10'
+        className='nav-link-item pointer-events-auto absolute bottom-5 left-5 z-20 cursor-pointer font-[font1] text-sm text-black transition-colors hover:text-black/60 lg:bottom-10 lg:left-10'
         onClick={() => go('/work', 'work-footer')}
         onKeyDown={(e) => e.key === 'Enter' && go('/work', 'work-footer')}
         role='button'

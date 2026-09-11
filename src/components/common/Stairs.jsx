@@ -44,7 +44,7 @@ const Stairs = (props) => {
 
     return (
         <div>
-            <div ref={stairParentRef} className='fixed inset-0 z-20'>
+            <div ref={stairParentRef} className='pointer-events-none fixed inset-0 z-20'>
                 <div className='h-full w-full flex'>
                     <div className='stair h-full w-1/5 bg-black'></div>
                     <div className='stair h-full w-1/5 bg-black'></div>

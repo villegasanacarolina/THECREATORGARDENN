@@ -36,6 +36,7 @@ const App = () => {
 
   const isHome = pathname === '/'
   const isWork = pathname === '/work' || pathname === '/projects'
+  const isAdmin = pathname === '/admin'
 
   useEffect(() => {
     if (isHome || isWork || navOpen) setHasOpenedGarden(true)
@@ -98,7 +99,7 @@ const App = () => {
 
   return (
     <div className='overflow-x-clip'>
-      <Navbar />
+      {!isAdmin && <Navbar />}
 
       <Suspense fallback={null}>
         {hasOpenedGarden && (
@@ -125,16 +126,10 @@ const App = () => {
         </div>
       )}
 
-      <FullScreenNav />
+      {!isAdmin && <FullScreenNav />}
 
-      <Stairs>
+      {isAdmin ? (
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/work' element={<Projects />} />
-          <Route path='/projects' element={<Projects />} />
-          <Route path='/approach' element={<Approach />} />
-          <Route path='/services' element={<Services />} />
-          <Route path='/contact' element={<Contact />} />
           <Route
             path='/admin'
             element={
@@ -144,7 +139,18 @@ const App = () => {
             }
           />
         </Routes>
-      </Stairs>
+      ) : (
+        <Stairs>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/work' element={<Projects />} />
+            <Route path='/projects' element={<Projects />} />
+            <Route path='/approach' element={<Approach />} />
+            <Route path='/services' element={<Services />} />
+            <Route path='/contact' element={<Contact />} />
+          </Routes>
+        </Stairs>
+      )}
     </div>
   )
 }
