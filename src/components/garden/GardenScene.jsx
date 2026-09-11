@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import gsap from 'gsap'
 import { TrailTexture } from '../../lib/TrailTexture'
 import { vertexShader, fragmentShader } from '../../lib/gardenShaders'
@@ -46,13 +45,11 @@ const GardenScene = ({ initialize, onProgress, onReady, onError }) => {
 
     const textureLoader = new THREE.TextureLoader(manager)
     const loader = new GLTFLoader(manager)
-    const draco = new DRACOLoader(manager)
-    // Revertido al CDN de Google: esta es la configuración que sí
-    // funcionaba en la primera versión. El cambio a un decodificador local
-    // (para intentar acelerar la carga) fue probablemente lo que rompió la
-    // animación — mejor confiable que "rápido pero roto".
-    draco.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
-    loader.setDRACOLoader(draco)
+    // El modelo ya no usa compresión Draco ni texturas WebP (se
+    // convirtieron a PNG normal) — así se elimina por completo esa
+    // dependencia externa, que era la sospecha principal de por qué la
+    // animación fallaba silenciosamente en algunos entornos. El archivo
+    // pesa más, pero carga sin depender de ningún decodificador extra.
 
     const trailTexture = new TrailTexture({
       size: 30, maxAge: 3000, radius: 0.2, intensity: 0.1,
