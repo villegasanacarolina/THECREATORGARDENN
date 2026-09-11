@@ -9,8 +9,8 @@ import SmokeText from './SmokeText'
 import SoundIcon from '../common/SoundIcon'
 
 const links = [
-  { label: 'Work', hover: 'Shaping the future with visionary clients', to: '/work' },
-  { label: 'Our Approach', hover: 'Our singular approach to craftsmanship', to: '/approach' },
+  { label: 'Our work', hover: 'Shaping the future with visionary clients', to: '/work' },
+  { label: 'Our approach', hover: 'Our singular approach to craftsmanship', to: '/approach' },
   { label: 'Services', hover: 'Services driven by purpose and vision', to: '/services' },
   { label: 'Contact us', hover: 'To talk about your brand', to: '/contact' },
 ]
@@ -100,7 +100,7 @@ const FullScreenNav = () => {
           type='button'
           aria-label='Close menu'
           onClick={closeMenu}
-          className='inline-flex h-[1.1rem] items-center font-[font3] text-[clamp(0.9rem,1.4vw,1.1rem)] uppercase leading-none tracking-wide text-black/70 transition-colors hover:text-black'
+          className='inline-flex h-[1.1rem] items-center font-[font3] text-[clamp(0.9rem,1.4vw,1.1rem)] leading-none tracking-wide text-black/70 transition-colors hover:text-black'
         >
           Close
         </button>
@@ -110,7 +110,7 @@ const FullScreenNav = () => {
         {links.map((item, index) => (
           <div
             key={item.to}
-            className='nav-link-item flex min-h-[5.4rem] w-full cursor-pointer items-center justify-center text-center font-[font3] text-[clamp(2.35rem,7vw,5.5rem)] uppercase leading-none text-black lg:min-h-[7rem]'
+            className='nav-link-item flex min-h-[5.4rem] w-full cursor-pointer items-center justify-center text-center font-[font3] text-[clamp(2.35rem,7vw,5.5rem)] leading-none text-black lg:min-h-[7rem]'
             onPointerEnter={(event) => {
               if (event.pointerType === 'mouse' && leavingIndex === null) setActiveIndex(index)
             }}
@@ -131,7 +131,7 @@ const FullScreenNav = () => {
       </div>
 
       <div
-        className='nav-link-item absolute bottom-5 left-5 z-10 cursor-pointer font-[font1] text-sm uppercase text-black transition-colors hover:text-black/60 lg:bottom-10 lg:left-10'
+        className='nav-link-item absolute bottom-5 left-5 z-10 cursor-pointer font-[font1] text-sm text-black transition-colors hover:text-black/60 lg:bottom-10 lg:left-10'
         onClick={() => go('/work', 'work-footer')}
         onKeyDown={(e) => e.key === 'Enter' && go('/work', 'work-footer')}
         role='button'

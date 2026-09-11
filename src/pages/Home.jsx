@@ -7,12 +7,24 @@ import { trackEvent } from '../lib/trackEvent'
 
 const TAGLINE = 'Innovative digital experiences studio'
 
-const splitChars = (text) =>
-  text.split('').map((char, i) => (
-    <span key={i} className='inline-block' style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}>
-      {char}
-    </span>
-  ))
+const splitChars = (text) => {
+  let charIndex = 0
+
+  return text.split(/([ \t]+)/).map((token, tokenIndex) => {
+    if (!token) return null
+    if (/^[ \t]+$/.test(token)) return <span key={`space-${tokenIndex}`}> </span>
+
+    return (
+      <span key={`word-${tokenIndex}`} className='inline-block whitespace-nowrap'>
+        {token.split('').map((char) => (
+          <span key={charIndex++} data-tagline-char className='inline-block'>
+            {char}
+          </span>
+        ))}
+      </span>
+    )
+  })
+}
 
 const Home = () => {
   const [scrolled, setScrolled] = useState(false)
@@ -42,7 +54,7 @@ const Home = () => {
 
   useEffect(() => {
     const wordmarkEl = wordmarkRef.current
-    const taglineChars = taglineRef.current ? [...taglineRef.current.children] : []
+    const taglineChars = taglineRef.current ? [...taglineRef.current.querySelectorAll('[data-tagline-char]')] : []
     if (!wordmarkEl || taglineChars.length === 0) return undefined
 
     gsap.killTweensOf([wordmarkEl, ...taglineChars])

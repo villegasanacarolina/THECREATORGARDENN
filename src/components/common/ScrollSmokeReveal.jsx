@@ -1,25 +1,37 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
-const renderText = (text) =>
-  text.split('').map((char, index) => {
-    if (char === '\n') return <br key={`br-${index}`} />
+const renderText = (text) => {
+  let charIndex = 0
+
+  return text.split(/(\n|[ \t]+)/).map((token, tokenIndex) => {
+    if (!token) return null
+    if (token === '\n') return <br key={`br-${tokenIndex}`} />
+    if (/^[ \t]+$/.test(token)) return <span key={`space-${tokenIndex}`}> </span>
+
     return (
-      <span
-        key={index}
-        data-smoke-char
-        className='inline-block'
-        style={{
-          opacity: 0,
-          filter: 'blur(16px)',
-          transform: 'translateY(14px)',
-          whiteSpace: char === ' ' ? 'pre' : 'normal',
-        }}
-      >
-        {char}
+      <span key={`word-${tokenIndex}`} className='inline-block whitespace-nowrap'>
+        {token.split('').map((char) => {
+          const index = charIndex++
+          return (
+            <span
+              key={index}
+              data-smoke-char
+              className='inline-block'
+              style={{
+                opacity: 0,
+                filter: 'blur(16px)',
+                transform: 'translateY(14px)',
+              }}
+            >
+              {char}
+            </span>
+          )
+        })}
       </span>
     )
   })
+}
 
 /**
  * Reveals text with the same soft smoke language used in Home/Menu.
@@ -75,9 +87,12 @@ const ScrollSmokeReveal = ({ text, as = 'span', className = '', delay = 0, immed
       // Stairs keeps the new page visually covered/transparent for roughly
       // 1.3 s. IntersectionObserver fires before that, which used to make the
       // first title/paragraph animate invisibly. We wait out only the
-      // remaining entrance transition. Later scroll reveals are immediate.
+      // remaining entrance transition. The stair overlay stays above the page
+      // until roughly 2 s, so immediate title/opening-copy reveals start just
+      // after it clears instead of animating invisibly behind the transition.
+      // Later scroll reveals are immediate.
       const elapsed = performance.now() - mountedAt
-      const remainingEntranceMs = Math.max(0, 1360 - elapsed)
+      const remainingEntranceMs = Math.max(0, 2050 - elapsed)
 
       if (remainingEntranceMs > 0) {
         clearTimeout(revealTimer)

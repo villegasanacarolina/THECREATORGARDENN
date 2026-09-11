@@ -164,20 +164,28 @@ const HomeStatement = ({ visible }) => {
             onPointerLeave={onPointerLeave}
             onPointerDown={onPointerDown}
           >
-            {line.split('').map((char, charIndex) => (
-              <span
-                key={`${lineIndex}-${charIndex}`}
-                data-statement-char
-                className='inline-block'
-                style={{
-                  opacity: 0,
-                  filter: 'blur(18px)',
-                  whiteSpace: char === ' ' ? 'pre' : 'normal',
-                }}
-              >
-                {char}
-              </span>
-            ))}
+            {line.split(/([ \t]+)/).map((token, tokenIndex) => {
+              if (!token) return null
+              if (/^[ \t]+$/.test(token)) return <span key={`space-${lineIndex}-${tokenIndex}`}> </span>
+
+              return (
+                <span key={`word-${lineIndex}-${tokenIndex}`} className='inline-block whitespace-nowrap'>
+                  {token.split('').map((char, charIndex) => (
+                    <span
+                      key={`${lineIndex}-${tokenIndex}-${charIndex}`}
+                      data-statement-char
+                      className='inline-block'
+                      style={{
+                        opacity: 0,
+                        filter: 'blur(18px)',
+                      }}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </span>
+              )
+            })}
           </span>
         </span>
       ))}

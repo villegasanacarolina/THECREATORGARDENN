@@ -1,28 +1,43 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
-const splitChars = (text, hidden = false) =>
-  text.split('').map((char, i) => (
-    <span
-      key={i}
-      className='inline-block'
-      style={{
-        opacity: hidden ? 0 : 1,
-        filter: hidden ? 'blur(14px)' : 'blur(0px)',
-        whiteSpace: char === ' ' ? 'pre' : 'normal',
-      }}
-    >
-      {char}
-    </span>
-  ))
+const splitChars = (text, hidden = false) => {
+  let charIndex = 0
+
+  return text.split(/([ \t]+)/).map((token, tokenIndex) => {
+    if (!token) return null
+    if (/^[ \t]+$/.test(token)) return <span key={`space-${tokenIndex}`}> </span>
+
+    return (
+      <span key={`word-${tokenIndex}`} className='inline-block whitespace-nowrap'>
+        {token.split('').map((char) => {
+          const index = charIndex++
+          return (
+            <span
+              key={index}
+              data-smoke-char
+              className='inline-block'
+              style={{
+                opacity: hidden ? 0 : 1,
+                filter: hidden ? 'blur(14px)' : 'blur(0px)',
+              }}
+            >
+              {char}
+            </span>
+          )
+        })}
+      </span>
+    )
+  })
+}
 
 const SmokeText = ({ primary, secondary, revealed, departing = false, secondaryClassName = '' }) => {
   const primaryRef = useRef(null)
   const secondaryRef = useRef(null)
 
   useEffect(() => {
-    const primaryChars = Array.from(primaryRef.current?.children || [])
-    const secondaryChars = Array.from(secondaryRef.current?.children || [])
+    const primaryChars = Array.from(primaryRef.current?.querySelectorAll('[data-smoke-char]') || [])
+    const secondaryChars = Array.from(secondaryRef.current?.querySelectorAll('[data-smoke-char]') || [])
     if (!primaryChars.length || !secondaryChars.length) return undefined
 
     gsap.killTweensOf([...primaryChars, ...secondaryChars])
