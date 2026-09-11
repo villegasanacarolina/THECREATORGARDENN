@@ -9,6 +9,8 @@ import Navbar from './components/Navigation/Navbar'
 import FullScreenNav from './components/Navigation/FullScreenNav'
 import Stairs from './components/common/Stairs'
 import useTrackPageview from './hooks/useTrackPageview'
+import useExperienceAnalytics from './hooks/useExperienceAnalytics'
+import { trackEvent } from './lib/trackEvent'
 import { NavbarContext } from './context/NavContext'
 import { useSound } from './hooks/useSound'
 
@@ -26,7 +28,11 @@ const App = () => {
   const [initialLoaderDone, setInitialLoaderDone] = useState(false)
   const [gardenError, setGardenError] = useState(null)
   const firstSoundGestureHandledRef = useRef(false)
+  const appStartedAtRef = useRef(typeof performance !== 'undefined' ? performance.now() : 0)
+  const gardenReadyTrackedRef = useRef(false)
+  const loaderExitTrackedRef = useRef(false)
   useTrackPageview()
+  useExperienceAnalytics()
 
   const isHome = pathname === '/'
   const isWork = pathname === '/work' || pathname === '/projects'
@@ -42,15 +48,31 @@ const App = () => {
   const handleGardenReady = useCallback(() => {
     setGardenProgress(100)
     setGardenReady(true)
+    if (!gardenReadyTrackedRef.current) {
+      gardenReadyTrackedRef.current = true
+      trackEvent('performance', 'garden_ready', {
+        ms: Math.max(0, Math.round(performance.now() - appStartedAtRef.current)),
+        viewport: window.innerWidth < 768 ? 'mobile' : 'desktop',
+      })
+    }
   }, [])
 
   const handleGardenError = useCallback((err) => {
-    setGardenError(err?.message || 'error desconocido')
+    const message = err?.message || 'error desconocido'
+    setGardenError(message)
+    trackEvent('error', 'garden_3d', { message: String(message).slice(0, 180) })
   }, [])
 
   const handleLoaderExited = useCallback(() => {
     setInitialLoaderDone(true)
     prepareSound?.()
+    if (!loaderExitTrackedRef.current) {
+      loaderExitTrackedRef.current = true
+      trackEvent('performance', 'loader_exit', {
+        ms: Math.max(0, Math.round(performance.now() - appStartedAtRef.current)),
+        viewport: window.innerWidth < 768 ? 'mobile' : 'desktop',
+      })
+    }
   }, [prepareSound])
 
   useEffect(() => {

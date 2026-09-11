@@ -6,7 +6,15 @@ function getVisitorId() {
   }
 }
 
-// Uso: trackEvent('click', 'email') / trackEvent('click', 'project', { project: 'charlotte-tilbury' })
+function getSessionId() {
+  try {
+    const raw = localStorage.getItem('tcg_session')
+    return raw ? JSON.parse(raw)?.id || null : null
+  } catch {
+    return null
+  }
+}
+
 export function trackEvent(type, label, meta) {
   try {
     fetch('/api/event', {
@@ -17,10 +25,13 @@ export function trackEvent(type, label, meta) {
         label: label || null,
         meta: meta || null,
         path: window.location.pathname,
+        url: `${window.location.pathname}${window.location.search || ''}`,
         visitorId: getVisitorId(),
+        sessionId: getSessionId(),
       }),
+      keepalive: true,
     }).catch(() => {})
   } catch {
-    // no-op: nunca debe romper la navegación del visitante
+    // La analítica nunca debe romper la experiencia del visitante.
   }
 }

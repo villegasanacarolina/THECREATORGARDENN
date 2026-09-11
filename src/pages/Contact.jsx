@@ -27,7 +27,7 @@ const Contact = () => {
 
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            onClick={() => trackEvent('click', 'email')}
+            onClick={() => trackEvent('click', 'email', { value: CONTACT_EMAIL })}
             className='block font-[font1] text-xl leading-snug transition-colors hover:text-[#D9A99B] lg:text-2xl'
           >
             <ScrollSmokeReveal text={CONTACT_EMAIL} immediate delay={0.14} />
@@ -37,7 +37,7 @@ const Contact = () => {
             href='https://maps.google.com/?q=ITESM+Campus+Guadalajara+Zapopan+Jalisco'
             target='_blank'
             rel='noreferrer'
-            onClick={() => trackEvent('click', 'address')}
+            onClick={() => trackEvent('click', 'address', { value: 'ITESM Campus Guadalajara, Zapopan, Jalisco' })}
             className='block font-[font1] text-xl leading-snug transition-colors hover:text-[#D9A99B] lg:text-2xl'
           >
             <ScrollSmokeReveal text={'ITESM Campus Guadalajara\nZapopan, Jalisco'} immediate delay={0.2} />

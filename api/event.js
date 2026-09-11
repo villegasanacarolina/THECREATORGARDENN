@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { type, label, meta, path, visitorId } = req.body || {}
+    const { type, label, meta, path, url, visitorId, sessionId } = req.body || {}
 
     if (!type || !visitorId) {
       res.status(400).json({ error: 'type y visitorId son requeridos' })
@@ -16,14 +16,15 @@ export default async function handler(req, res) {
     }
 
     const info = getRequestInfo(req)
-
     const db = await getDb()
     await db.collection('events').insertOne({
       type,
       label: label || null,
       meta: meta || null,
       path: path || null,
+      url: url || path || null,
       visitorId,
+      sessionId: sessionId || null,
       ...info,
       createdAt: new Date(),
     })

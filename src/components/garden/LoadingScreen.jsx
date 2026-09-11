@@ -10,7 +10,7 @@ const LoadingScreen = ({ progress, ready, onExited }) => {
     const timeout = setTimeout(() => {
       setHidden(true)
       onExited?.()
-    }, 560)
+    }, 140)
 
     return () => clearTimeout(timeout)
   }, [ready, onExited])
@@ -19,7 +19,7 @@ const LoadingScreen = ({ progress, ready, onExited }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-[60] flex flex-col items-center justify-center gap-6 bg-[#e5e5e5] px-6 transition-opacity duration-500 ${ready ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+      className={`fixed inset-0 z-[60] flex flex-col items-center justify-center gap-6 bg-[#e5e5e5] px-6 transition-opacity duration-300 ${ready ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
     >
       <div className='flex items-center gap-3'>
         <Logo tone='black' className='h-6 w-6 lg:h-8 lg:w-8' />

@@ -32,6 +32,17 @@ const Home = () => {
   const taglineRef = useRef(null)
 
   useEffect(() => {
+    // Close from the full-screen menu may navigate here from another route.
+    // Consume the one-shot flag only after Home exists, then force the original
+    // wordmark/tagline state without replaying the 3D loading screen.
+    try {
+      if (sessionStorage.getItem('tcg:force-home-intro') === '1') {
+        sessionStorage.removeItem('tcg:force-home-intro')
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+        setScrolled(false)
+      }
+    } catch {}
+
     const syncFromScroll = () => {
       const threshold = Math.max(60, window.innerHeight * 0.12)
       setScrolled(window.scrollY > threshold)

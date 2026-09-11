@@ -57,10 +57,26 @@ const FullScreenNav = () => {
     clearTimeout(navigateTimeoutRef.current)
     setActiveIndex(null)
     setLeavingIndex(null)
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-    navigate('/')
-    window.dispatchEvent(new Event('tcg:reset-home'))
+
+    // Persist the intent through the route change. Home consumes this flag on
+    // mount, so Close works even when the page transition delays Home rendering.
+    try {
+      sessionStorage.setItem('tcg:force-home-intro', '1')
+    } catch {
+      // sessionStorage can be unavailable in strict privacy modes; the event
+      // below still covers the already-mounted Home case.
+    }
+
     setNavOpen(false)
+
+    if (window.location.pathname === '/') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      window.dispatchEvent(new Event('tcg:reset-home'))
+      try { sessionStorage.removeItem('tcg:force-home-intro') } catch {}
+      return
+    }
+
+    navigate('/')
   }
 
   const gsapAnimation = () => {
@@ -112,7 +128,10 @@ const FullScreenNav = () => {
             key={item.to}
             className='nav-link-item flex min-h-[5.4rem] w-full cursor-pointer items-center justify-center text-center font-[font3] text-[clamp(2.35rem,7vw,5.5rem)] leading-none text-black lg:min-h-[7rem]'
             onPointerEnter={(event) => {
-              if (event.pointerType === 'mouse' && leavingIndex === null) setActiveIndex(index)
+              if (event.pointerType === 'mouse' && leavingIndex === null) {
+                setActiveIndex(index)
+                trackEvent('hover', 'nav_preview', { to: item.to })
+              }
             }}
             onPointerLeave={(event) => {
               if (event.pointerType === 'mouse' && leavingIndex === null) setActiveIndex(null)

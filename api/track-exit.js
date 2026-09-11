@@ -7,8 +7,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // navigator.sendBeacon a veces manda el body como texto plano en vez de
-    // JSON ya parseado — lo cubrimos por si acaso.
     let body = req.body
     if (typeof body === 'string') {
       try {
@@ -18,7 +16,7 @@ export default async function handler(req, res) {
       }
     }
 
-    const { pageviewId, durationMs, maxScrollPercent } = body || {}
+    const { pageviewId, durationMs, engagedMs, maxScrollPercent } = body || {}
 
     if (!pageviewId) {
       res.status(200).json({ ok: false })
@@ -31,6 +29,7 @@ export default async function handler(req, res) {
       {
         $set: {
           durationMs: typeof durationMs === 'number' ? durationMs : null,
+          engagedMs: typeof engagedMs === 'number' ? engagedMs : null,
           maxScrollPercent: typeof maxScrollPercent === 'number' ? maxScrollPercent : null,
         },
       },

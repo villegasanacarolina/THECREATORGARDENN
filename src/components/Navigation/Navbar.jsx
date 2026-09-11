@@ -4,6 +4,7 @@ import { NavbarColorContext, NavbarContext } from '../../context/NavContext'
 import { useSound } from '../../hooks/useSound'
 import Logo from '../common/Logo'
 import SoundIcon from '../common/SoundIcon'
+import { trackEvent } from '../../lib/trackEvent'
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useContext(NavbarContext)
@@ -39,7 +40,7 @@ const Navbar = () => {
           <button
             type='button'
             aria-label='Open menu'
-            onClick={() => setNavOpen(true)}
+            onClick={() => { trackEvent('interaction', 'menu_open'); setNavOpen(true) }}
             className={`inline-flex h-[1.1rem] items-center font-[font3] text-[clamp(0.9rem,1.4vw,1.1rem)] leading-none tracking-wide transition-colors ${colorClass}`}
           >
             About

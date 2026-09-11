@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { SoundContext } from './soundContextValue'
+import { trackEvent } from '../lib/trackEvent'
 
 export const SoundProvider = ({ children }) => {
   const [muted, setMuted] = useState(false)
@@ -48,12 +49,14 @@ export const SoundProvider = ({ children }) => {
     audio.play().then(() => {
       audio.dataset.userStarted = 'true'
       setMuted(false)
+      trackEvent('audio', 'started', { trigger: 'first_interaction' })
     }).catch(() => {
       // startSound is called from a user gesture, so modern browsers should
       // allow it. If one still blocks it, leave the speaker state muted and
       // let the explicit speaker button be the only retry mechanism.
       audio.muted = true
       setMuted(true)
+      trackEvent('audio', 'blocked', { trigger: 'first_interaction' })
     })
   }, [getAudio])
 
@@ -70,15 +73,18 @@ export const SoundProvider = ({ children }) => {
       audio.play().then(() => {
         audio.dataset.userStarted = 'true'
         setMuted(false)
+        trackEvent('audio', 'unmuted', { trigger: 'speaker_button' })
       }).catch(() => {
         audio.muted = true
         audio.dataset.userMuted = 'true'
         setMuted(true)
+        trackEvent('audio', 'blocked', { trigger: 'speaker_button' })
       })
       return
     }
 
     setMuted(true)
+    trackEvent('audio', 'muted', { trigger: 'speaker_button' })
   }, [getAudio])
 
   return (

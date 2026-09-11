@@ -10,14 +10,36 @@ export default async function handler(req, res) {
   try {
     const {
       path,
+      query,
+      url,
+      title,
       referrer,
       visitorId,
+      sessionId,
       pageviewId,
       language,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      utmContent,
+      utmTerm,
       screenWidth,
       screenHeight,
       viewportWidth,
       viewportHeight,
+      pixelRatio,
+      hardwareConcurrency,
+      deviceMemory,
+      maxTouchPoints,
+      connectionType,
+      effectiveType,
+      downlink,
+      saveData,
+      orientation,
+      colorScheme,
+      standalone,
+      timezone,
+      platform,
     } = req.body || {}
 
     if (!path || !visitorId) {
@@ -26,21 +48,42 @@ export default async function handler(req, res) {
     }
 
     const info = getRequestInfo(req)
-
     const db = await getDb()
+
     await db.collection('pageviews').insertOne({
       path,
+      query: query || null,
+      url: url || path,
+      title: title || null,
       referrer: referrer || null,
       visitorId,
+      sessionId: sessionId || null,
       pageviewId: pageviewId || null,
       language: language || null,
+      utmSource: utmSource || null,
+      utmMedium: utmMedium || null,
+      utmCampaign: utmCampaign || null,
+      utmContent: utmContent || null,
+      utmTerm: utmTerm || null,
       screenWidth: screenWidth || null,
       screenHeight: screenHeight || null,
       viewportWidth: viewportWidth || null,
       viewportHeight: viewportHeight || null,
-      // Se llenan después, cuando el visitante sale de la página
-      // (ver api/track-exit.js)
+      pixelRatio: typeof pixelRatio === 'number' ? pixelRatio : null,
+      hardwareConcurrency: hardwareConcurrency || null,
+      deviceMemory: deviceMemory || null,
+      maxTouchPoints: typeof maxTouchPoints === 'number' ? maxTouchPoints : null,
+      connectionType: connectionType || null,
+      effectiveType: effectiveType || null,
+      downlink: typeof downlink === 'number' ? downlink : null,
+      saveData: Boolean(saveData),
+      orientation: orientation || null,
+      colorScheme: colorScheme || null,
+      standalone: Boolean(standalone),
+      timezone: timezone || null,
+      platform: platform || null,
       durationMs: null,
+      engagedMs: null,
       maxScrollPercent: null,
       ...info,
       createdAt: new Date(),

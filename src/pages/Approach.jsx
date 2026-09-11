@@ -5,7 +5,7 @@ import SectionVideo from '../components/common/SectionVideo'
 
 const Approach = () => {
   return (
-    <div className='relative min-h-screen overflow-hidden bg-black pb-0 text-black'>
+    <div className='relative min-h-screen overflow-hidden bg-black pb-0 text-white'>
       <SectionVideo mobileSrc='/videos/APPROACH-Mobile.mp4' desktopSrc='/videos/APPROACH-Desktop.mp4' />
       <div className='relative z-10 px-6 pt-[25vh] lg:px-16'>
         <ScrollSmokeReveal
