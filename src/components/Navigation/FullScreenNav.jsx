@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import { useContext, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { NavbarContext } from '../../context/NavContext'
+import { trackEvent } from '../../lib/trackEvent'
 import SmokeText from './SmokeText'
 
 const links = [
@@ -64,10 +65,11 @@ const FullScreenNav = () => {
   }, [navOpen])
 
   return (
-    // Sin fondo propio a propósito: la animación 3D que se ve detrás es la
-    // instancia GLOBAL compartida (ver App.jsx), que sube de capa (z-45)
-    // justo cuando el menú se abre. Así nunca se carga el modelo dos veces.
-    <div id='fullscreennav' className='fullscreennav isolate fixed inset-0 z-50 hidden overflow-hidden'>
+    // bg-[#e5e5e5] es un RESPALDO: si por lo que sea la animación 3D (que
+    // vive detrás, ver App.jsx) tardara en cargar o fallara, este fondo
+    // sólido evita que la página de atrás se alcance a ver a través del
+    // menú — nunca debe haber traslape con el contenido de otra página.
+    <div id='fullscreennav' className='fullscreennav isolate fixed inset-0 z-50 hidden overflow-hidden bg-[#e5e5e5]'>
       <button
         type='button'
         aria-label='Close menu'
@@ -87,6 +89,16 @@ const FullScreenNav = () => {
             <SmokeText primary={item.label} secondary={item.hover} revealed={activeIndex === index} />
           </div>
         ))}
+      </div>
+
+      <div
+        className='nav-link-item absolute bottom-5 left-5 z-10 cursor-pointer font-[font1] text-sm uppercase text-black transition-colors hover:text-black/60 lg:bottom-10 lg:left-10'
+        onClick={() => { trackEvent('click', 'nav_link', { to: '/work' }); go('/work', 'work-footer') }}
+        onKeyDown={(e) => e.key === 'Enter' && go('/work', 'work-footer')}
+        role='button'
+        tabIndex={0}
+      >
+        See all projects →
       </div>
     </div>
   )

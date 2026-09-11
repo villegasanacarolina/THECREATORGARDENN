@@ -9,21 +9,17 @@ const contactScenes = [
   { subject: 'next idea' },
 ]
 
-// Completamente horizontal ahora — sin rotación ni compensación diagonal.
+// Fija ahora — sin animación de movimiento, un solo correo centrado.
 const ContactTicker = ({ topClass }) => (
   <button
     type='button'
     aria-label='Email The Creator Garden'
     onClick={() => trackEvent('click', 'email_ticker')}
-    className={`contact-ticker absolute ${topClass} left-1/2 z-30 w-[102vw] -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-white py-3 text-left font-[font2] text-[9vw] uppercase leading-none text-black lg:text-[6vw]`}
+    className={`contact-ticker absolute ${topClass} left-1/2 z-30 flex w-[102vw] -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden bg-white py-3 text-center font-[font2] text-[9vw] uppercase leading-none text-black lg:text-[6vw]`}
   >
-    <span className='contact-ticker-track inline-flex items-center whitespace-nowrap'>
-      {Array.from({ length: 10 }, (_, index) => (
-        <span key={index} className='inline-flex items-center'>
-          {CONTACT_EMAIL}
-          <HeartIcon />
-        </span>
-      ))}
+    <span className='inline-flex items-center'>
+      {CONTACT_EMAIL}
+      <HeartIcon />
     </span>
   </button>
 )

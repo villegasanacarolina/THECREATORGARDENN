@@ -12,9 +12,9 @@ const NavContext = ({ children }) => {
 
     const locate = useLocation().pathname
     useEffect(function(){
-        // Home, Work y Approach ahora son de fondo claro/negro sobre claro.
-        // Services y Contact llevan video con texto blanco.
-        const blackTextPages = ['/', '/work', '/projects', '/approach']
+        // Home y Work son de fondo claro (texto negro). Approach, Services
+        // y Contact llevan video con texto blanco.
+        const blackTextPages = ['/', '/work', '/projects']
         if (blackTextPages.includes(locate)) {
             setNavColor('black')
         } else {

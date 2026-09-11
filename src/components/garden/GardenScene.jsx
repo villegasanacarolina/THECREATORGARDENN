@@ -71,20 +71,30 @@ const GardenScene = ({ initialize, onProgress, onReady }) => {
     const pointer = new THREE.Vector2()
 
     let wait = false
-    const onPointerMove = (event) => {
+    const registerTouch = (clientX, clientY) => {
       if (wait) return
       wait = true
       setTimeout(() => { wait = false }, 100)
 
       const rect = container.getBoundingClientRect()
-      pointer.x = ((event.clientX - rect.left) / width) * 2 - 1
-      pointer.y = -((event.clientY - rect.top) / height) * 2 + 1
+      pointer.x = ((clientX - rect.left) / width) * 2 - 1
+      pointer.y = -((clientY - rect.top) / height) * 2 + 1
 
       raycaster.setFromCamera(pointer, fboCamera)
       const intersects = raycaster.intersectObject(fboMesh)
       if (intersects.length > 0) trailTexture.addTouch(intersects[0].uv)
     }
+    const onPointerMove = (event) => registerTouch(event.clientX, event.clientY)
+    // Mobile no dispara pointermove al arrastrar el dedo en todos los
+    // navegadores — por eso antes solo funcionaba en desktop. touchmove sí
+    // lo cubre. { passive: true } para no bloquear el scroll de la página.
+    const onTouchMove = (event) => {
+      const touch = event.touches[0]
+      if (touch) registerTouch(touch.clientX, touch.clientY)
+    }
     window.addEventListener('pointermove', onPointerMove)
+    window.addEventListener('touchmove', onTouchMove, { passive: true })
+    window.addEventListener('touchstart', onTouchMove, { passive: true })
 
     // Recorrido automático: aunque nadie toque la pantalla, siempre hay
     // "esporas respirando" — igual que tenías en tu versión original.
@@ -178,6 +188,8 @@ const GardenScene = ({ initialize, onProgress, onReady }) => {
       cancelAnimationFrame(frameId)
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('touchmove', onTouchMove)
+      window.removeEventListener('touchstart', onTouchMove)
       autoMoveTween?.kill()
       if (model) scene.remove(model)
       renderer.dispose()

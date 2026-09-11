@@ -25,25 +25,23 @@ const LoadingScreen = ({ progress, ready }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-[60] flex flex-col justify-between bg-[#e5e5e5] px-6 py-6 transition-opacity duration-700 lg:px-10 lg:py-10 ${ready ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+      className={`fixed inset-0 z-[60] flex flex-col items-center justify-center gap-6 bg-[#e5e5e5] px-6 transition-opacity duration-700 ${ready ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
     >
-      <p className={`font-[font1] text-sm text-black/40 transition-opacity ${soundEnabled ? 'opacity-0' : 'opacity-100'}`}>
+      <p className={`absolute top-6 font-[font1] text-sm text-black/40 transition-opacity lg:top-10 ${soundEnabled ? 'opacity-0' : 'opacity-100'}`}>
         Click to enable sound
       </p>
 
-      <div className='flex items-center gap-4'>
-        <div className='flex items-center gap-3'>
-          <Logo className='h-6 w-6 lg:h-8 lg:w-8' />
-          <span className='font-[font3] text-xs uppercase tracking-[0.2em] text-black lg:text-sm'>
-            The Creator Garden
-          </span>
-        </div>
-        <div className='h-px flex-1 max-w-[28rem] bg-black/20'>
-          <div
-            className='h-px bg-black/60 transition-all duration-300 ease-out'
-            style={{ width: `${progress}%` }}
-          />
-        </div>
+      <div className='flex items-center gap-3'>
+        <Logo className='h-6 w-6 lg:h-8 lg:w-8' />
+        <span className='font-[font3] text-xs uppercase tracking-[0.2em] text-black lg:text-sm'>
+          The Creator Garden
+        </span>
+      </div>
+      <div className='h-px w-[min(28rem,70vw)] bg-black/20'>
+        <div
+          className='h-px bg-black/60 transition-all duration-300 ease-out'
+          style={{ width: `${progress}%` }}
+        />
       </div>
     </div>
   )
