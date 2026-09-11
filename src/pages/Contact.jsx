@@ -14,12 +14,15 @@ const Contact = () => {
             as='h1'
             text='Contact us'
             className='font-[font2] text-5xl uppercase leading-none lg:text-6xl'
+            immediate
           />
 
           <ScrollSmokeReveal
             as='p'
             text={'Interaction begins\nwith dialogue.'}
             className='font-[font1] text-xl leading-snug lg:text-2xl'
+            immediate
+            delay={0.08}
           />
 
           <a
@@ -27,7 +30,7 @@ const Contact = () => {
             onClick={() => trackEvent('click', 'email')}
             className='block font-[font1] text-xl leading-snug transition-colors hover:text-[#D9A99B] lg:text-2xl'
           >
-            <ScrollSmokeReveal text={CONTACT_EMAIL} />
+            <ScrollSmokeReveal text={CONTACT_EMAIL} immediate delay={0.14} />
           </a>
 
           <a
@@ -37,7 +40,7 @@ const Contact = () => {
             onClick={() => trackEvent('click', 'address')}
             className='block font-[font1] text-xl leading-snug transition-colors hover:text-[#D9A99B] lg:text-2xl'
           >
-            <ScrollSmokeReveal text={'ITESM Campus Guadalajara\nZapopan, Jalisco'} />
+            <ScrollSmokeReveal text={'ITESM Campus Guadalajara\nZapopan, Jalisco'} immediate delay={0.2} />
           </a>
         </div>
       </div>

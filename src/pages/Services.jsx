@@ -12,15 +12,18 @@ const Services = () => {
           as='h1'
           text='Services'
           className='font-[font2] text-6xl uppercase leading-none lg:text-[10vw]'
+          immediate
         />
         <div className='mt-24 flex flex-col gap-40 lg:gap-64'>
-          {[serviceIntro.left, serviceIntro.right].map((text) => (
+          {[serviceIntro.left, serviceIntro.right].map((text, introIndex) => (
             <section key={text} className='relative z-10 isolate overflow-hidden px-6 py-16'>
               <div className='relative w-full max-w-[19rem]'>
                 <ScrollSmokeReveal
                   as='p'
                   text={text}
                   className='font-[font1] font-medium text-[2.5rem] leading-tight lg:text-[3rem]'
+                  immediate={introIndex === 0}
+                  delay={introIndex === 0 ? 0.08 : 0}
                 />
               </div>
             </section>

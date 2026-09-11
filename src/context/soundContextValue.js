@@ -1,3 +1,3 @@
 import { createContext } from 'react'
 
-export const SoundContext = createContext([true, () => {}, () => {}])
+export const SoundContext = createContext([true, () => {}, () => {}, () => {}])

@@ -12,6 +12,7 @@ const Approach = () => {
           as='h1'
           text='Our approach'
           className='font-[font2] text-6xl uppercase leading-none lg:text-[10vw]'
+          immediate
         />
       </div>
       <div className='mt-24 flex flex-col gap-40 lg:gap-64'>
@@ -27,6 +28,8 @@ const Approach = () => {
                   as='p'
                   text={block.text}
                   className='font-[font1] font-medium text-[2.5rem] leading-tight lg:text-[3rem]'
+                  immediate={index === 0}
+                  delay={index === 0 ? 0.08 : 0}
                 />
               </div>
             </section>

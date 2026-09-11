@@ -12,8 +12,7 @@ export const SoundProvider = ({ children }) => {
       audio = document.createElement('audio')
       audio.id = 'background-audio'
       audio.src = '/GRIMES.MP3'
-      // No descargamos el MP3 mientras la escena 3D está cargando. En móvil
-      // esto evita competir por ancho de banda con el GLB y acelera el loader.
+      // Do not compete with the 3D model during the initial load.
       audio.preload = 'none'
       audio.loop = true
       audio.playsInline = true
@@ -27,6 +26,19 @@ export const SoundProvider = ({ children }) => {
     setMuted(false)
   }, [getAudio])
 
+  const prepareSound = useCallback(() => {
+    const audio = getAudio()
+    if (!audio || audio.dataset.userMuted === 'true') return
+
+    // The 3D scene is already visible at this point, so the audio can buffer
+    // without slowing the loader. We still do NOT play it until the user's
+    // first real interaction.
+    if (audio.preload !== 'auto') {
+      audio.preload = 'auto'
+      audio.load()
+    }
+  }, [getAudio])
+
   const startSound = useCallback(() => {
     const audio = getAudio()
     if (!audio || audio.dataset.userMuted === 'true') return
@@ -34,11 +46,12 @@ export const SoundProvider = ({ children }) => {
     audio.preload = 'auto'
     audio.muted = false
     audio.play().then(() => {
+      audio.dataset.userStarted = 'true'
       setMuted(false)
     }).catch(() => {
-      // Safari/Chrome pueden bloquear autoplay con sonido. No añadimos un
-      // listener global de clic: si el navegador lo bloquea, solo la bocina
-      // puede activarlo después, tal como se pidió.
+      // startSound is called from a user gesture, so modern browsers should
+      // allow it. If one still blocks it, leave the speaker state muted and
+      // let the explicit speaker button be the only retry mechanism.
       audio.muted = true
       setMuted(true)
     })
@@ -54,7 +67,10 @@ export const SoundProvider = ({ children }) => {
 
     if (!nextMuted) {
       audio.preload = 'auto'
-      audio.play().then(() => setMuted(false)).catch(() => {
+      audio.play().then(() => {
+        audio.dataset.userStarted = 'true'
+        setMuted(false)
+      }).catch(() => {
         audio.muted = true
         audio.dataset.userMuted = 'true'
         setMuted(true)
@@ -65,5 +81,9 @@ export const SoundProvider = ({ children }) => {
     setMuted(true)
   }, [getAudio])
 
-  return <SoundContext.Provider value={[muted, toggleSound, startSound]}>{children}</SoundContext.Provider>
+  return (
+    <SoundContext.Provider value={[muted, toggleSound, startSound, prepareSound]}>
+      {children}
+    </SoundContext.Provider>
+  )
 }

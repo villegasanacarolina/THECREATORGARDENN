@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useContext, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
@@ -19,12 +19,13 @@ const LoadingScreen = lazy(() => import('./components/garden/LoadingScreen'))
 const App = () => {
   const { pathname } = useLocation()
   const [navOpen] = useContext(NavbarContext)
-  const [, , startSound] = useSound()
+  const [, , startSound, prepareSound] = useSound()
   const [hasOpenedGarden, setHasOpenedGarden] = useState(false)
   const [gardenProgress, setGardenProgress] = useState(0)
   const [gardenReady, setGardenReady] = useState(false)
   const [initialLoaderDone, setInitialLoaderDone] = useState(false)
   const [gardenError, setGardenError] = useState(null)
+  const firstSoundGestureHandledRef = useRef(false)
   useTrackPageview()
 
   const isHome = pathname === '/'
@@ -49,8 +50,29 @@ const App = () => {
 
   const handleLoaderExited = useCallback(() => {
     setInitialLoaderDone(true)
-    startSound?.()
-  }, [startSound])
+    prepareSound?.()
+  }, [prepareSound])
+
+  useEffect(() => {
+    if (!initialLoaderDone || firstSoundGestureHandledRef.current) return undefined
+
+    const handleFirstGesture = (event) => {
+      // If the very first interaction is the speaker itself, let that control
+      // handle the user's intent and do not run an extra global play call.
+      if (event.target instanceof Element && event.target.closest('[data-sound-toggle]')) {
+        firstSoundGestureHandledRef.current = true
+        window.removeEventListener('pointerdown', handleFirstGesture, true)
+        return
+      }
+
+      firstSoundGestureHandledRef.current = true
+      startSound?.()
+      window.removeEventListener('pointerdown', handleFirstGesture, true)
+    }
+
+    window.addEventListener('pointerdown', handleFirstGesture, true)
+    return () => window.removeEventListener('pointerdown', handleFirstGesture, true)
+  }, [initialLoaderDone, startSound])
 
   return (
     <div className='overflow-x-clip'>
