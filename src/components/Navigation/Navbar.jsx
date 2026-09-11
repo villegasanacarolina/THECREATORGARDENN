@@ -38,7 +38,7 @@ const Navbar = () => {
             aria-label={muted ? 'Activar sonido' : 'Desactivar sonido'}
             data-sound-toggle
             onClick={toggleSound}
-            className={`transition-colors ${colorClass}`}
+            className={`inline-flex h-[1.1rem] items-center justify-center transition-colors ${colorClass}`}
           >
             <SoundIcon muted={muted} />
           </button>
@@ -46,7 +46,7 @@ const Navbar = () => {
             type='button'
             aria-label='Open menu'
             onClick={() => setNavOpen(true)}
-            className={`font-[font3] text-[clamp(0.9rem,1.4vw,1.1rem)] uppercase tracking-wide transition-colors ${colorClass}`}
+            className={`inline-flex h-[1.1rem] items-center font-[font3] text-[clamp(0.9rem,1.4vw,1.1rem)] uppercase leading-none tracking-wide transition-colors ${colorClass}`}
           >
             About
           </button>

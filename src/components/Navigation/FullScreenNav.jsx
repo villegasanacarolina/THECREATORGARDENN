@@ -72,14 +72,14 @@ const FullScreenNav = () => {
     // vive detrás, ver App.jsx) tardara en cargar o fallara, este fondo
     // sólido evita que la página de atrás se alcance a ver a través del
     // menú — nunca debe haber traslape con el contenido de otra página.
-    <div id='fullscreennav' className='fullscreennav isolate fixed inset-0 z-50 hidden overflow-hidden bg-[#e5e5e5]'>
+    <div id='fullscreennav' className='fullscreennav isolate fixed inset-0 z-50 hidden overflow-hidden bg-transparent'>
       <div className='absolute right-5 top-5 z-10 flex items-center gap-2 lg:right-10 lg:top-10 lg:gap-3'>
         <button
           type='button'
           aria-label={muted ? 'Activar sonido' : 'Desactivar sonido'}
           data-sound-toggle
           onClick={toggleSound}
-          className='text-black/70 transition-colors hover:text-black'
+          className='inline-flex h-[1.1rem] items-center justify-center text-black/70 transition-colors hover:text-black'
         >
           <SoundIcon muted={muted} />
         </button>
@@ -87,7 +87,7 @@ const FullScreenNav = () => {
           type='button'
           aria-label='Close menu'
           onClick={closeMenu}
-          className='font-[font3] text-[clamp(0.9rem,1.4vw,1.1rem)] uppercase tracking-wide text-black/70 transition-colors hover:text-black'
+          className='inline-flex h-[1.1rem] items-center font-[font3] text-[clamp(0.9rem,1.4vw,1.1rem)] uppercase leading-none tracking-wide text-black/70 transition-colors hover:text-black'
         >
           Close
         </button>

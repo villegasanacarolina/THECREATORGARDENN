@@ -23,6 +23,7 @@ const GardenScene = ({ initialize, onProgress, onReady, onError, onDebug }) => {
     mountedRef.current = true
 
     const container = containerRef.current
+    let disposed = false
     let width = container.offsetWidth
     let height = container.offsetHeight
     onDebug?.(`montado, tamaño contenedor: ${width}x${height}`)
@@ -38,12 +39,25 @@ const GardenScene = ({ initialize, onProgress, onReady, onError, onDebug }) => {
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.01, 1000)
     camera.position.set(0, 0, 10)
 
-    // Manager para reportar el progreso real de descarga (modelo + plaster)
-    // a quien esté mostrando la barra de carga.
-    const manager = new THREE.LoadingManager()
-    manager.onProgress = (_url, loaded, total) => {
-      onProgress?.(Math.min(100, Math.round((loaded / total) * 100)))
+    let loadSettled = false
+    let safetyTimeout
+    const settleLoad = () => {
+      if (disposed || loadSettled) return
+      loadSettled = true
+      if (safetyTimeout) clearTimeout(safetyTimeout)
+      onProgress?.(100)
+      onReady?.()
     }
+
+    // La barra de carga representa la carga real de TODOS los recursos de
+    // la escena (modelo + texturas). No retiramos el loader hasta que el
+    // LoadingManager confirma que todo terminó.
+    const manager = new THREE.LoadingManager()
+    manager.onStart = () => { if (!disposed) onProgress?.(0) }
+    manager.onProgress = (_url, loaded, total) => {
+      if (!disposed) onProgress?.(Math.min(99, Math.round((loaded / total) * 100)))
+    }
+    manager.onLoad = settleLoad
 
     const textureLoader = new THREE.TextureLoader(manager)
     const loader = new GLTFLoader(manager)
@@ -138,16 +152,10 @@ const GardenScene = ({ initialize, onProgress, onReady, onError, onDebug }) => {
     }
 
     let model = null
-    let loadSettled = false
-    const settleLoad = () => {
-      if (loadSettled) return
-      loadSettled = true
-      onReady?.()
-    }
     // Si algo falla al cargar (red, archivo corrupto, etc.), esto evita que
     // la pantalla de carga se quede esperando para siempre sin avisar nada
     // — se loguea el motivo real en la consola para poder diagnosticarlo.
-    const safetyTimeout = setTimeout(() => {
+    safetyTimeout = setTimeout(() => {
       if (!loadSettled) {
         console.warn('[GardenScene] tiempo de espera agotado cargando el modelo 3D — revisa la consola/red para más detalle')
         settleLoad()
@@ -157,6 +165,7 @@ const GardenScene = ({ initialize, onProgress, onReady, onError, onDebug }) => {
     loader.load(
       '/garden/model.glb',
       (gltf) => {
+        if (disposed) return
         model = gltf.scene
         let meshCount = 0
         gltf.scene.traverse((child) => {
@@ -175,15 +184,13 @@ const GardenScene = ({ initialize, onProgress, onReady, onError, onDebug }) => {
           }
         })
         scene.add(gltf.scene)
-        clearTimeout(safetyTimeout)
         onDebug?.(`modelo cargado OK — ${meshCount} mallas agregadas a la escena`)
-        settleLoad()
       },
       undefined,
       (error) => {
+        if (disposed) return
         console.error('[GardenScene] error cargando el modelo 3D:', error)
         onDebug?.(`ERROR cargando modelo: ${error?.message || error}`)
-        clearTimeout(safetyTimeout)
         onError?.(error)
         settleLoad()
       },
@@ -219,6 +226,8 @@ const GardenScene = ({ initialize, onProgress, onReady, onError, onDebug }) => {
     renderLoop()
 
     return () => {
+      disposed = true
+      mountedRef.current = false
       // Nunca se llama en uso normal (el componente vive toda la sesión),
       // pero se deja la limpieza completa por si el árbol se desmonta.
       clearTimeout(safetyTimeout)
@@ -230,7 +239,7 @@ const GardenScene = ({ initialize, onProgress, onReady, onError, onDebug }) => {
       autoMoveTween?.kill()
       if (model) scene.remove(model)
       renderer.dispose()
-      container.removeChild(renderer.domElement)
+      if (renderer.domElement.parentNode === container) container.removeChild(renderer.domElement)
     }
   }, [initialize, onProgress, onReady, onError, onDebug])
 

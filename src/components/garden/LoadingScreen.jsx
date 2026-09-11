@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import Logo from '../common/Logo'
 
 const LoadingScreen = ({ progress, ready }) => {
-  const [soundEnabled, setSoundEnabled] = useState(false)
-  const [hidden, setHidden] = useState(false)
+  const [hidden, setHidden] = useState(ready)
 
   useEffect(() => {
     if (!ready) return undefined
@@ -11,26 +10,12 @@ const LoadingScreen = ({ progress, ready }) => {
     return () => clearTimeout(timeout)
   }, [ready])
 
-  useEffect(() => {
-    const markEnabled = () => setSoundEnabled(true)
-    window.addEventListener('pointerdown', markEnabled, { once: true })
-    window.addEventListener('keydown', markEnabled, { once: true })
-    return () => {
-      window.removeEventListener('pointerdown', markEnabled)
-      window.removeEventListener('keydown', markEnabled)
-    }
-  }, [])
-
   if (hidden) return null
 
   return (
     <div
       className={`fixed inset-0 z-[60] flex flex-col items-center justify-center gap-6 bg-[#e5e5e5] px-6 transition-opacity duration-700 ${ready ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
     >
-      <p className={`absolute top-6 font-[font1] text-sm text-black/40 transition-opacity lg:top-10 ${soundEnabled ? 'opacity-0' : 'opacity-100'}`}>
-        Click to enable sound
-      </p>
-
       <div className='flex items-center gap-3'>
         <Logo className='h-6 w-6 lg:h-8 lg:w-8' />
         <span className='font-[font3] text-xs uppercase tracking-[0.2em] text-black lg:text-sm'>
