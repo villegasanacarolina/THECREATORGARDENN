@@ -1,15 +1,16 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // mobileSrc se usa siempre por defecto; desktopSrc la reemplaza en pantallas
 // de 1024px o más. El navegador elige la fuente UNA sola vez al cargar la
 // página (no cambia si luego resizeas la ventana) — comportamiento normal
-// y esperado de <video><source media="..."></video>.
+// y esperado de <video><source media="...">.
 //
 // poster (opcional): una imagen estática que se muestra INSTANTÁNEO mientras
 // el video pesado sigue cargando, en vez de ver la pantalla en negro/vacía
 // todo ese tiempo. Recomendado si tus videos son grandes.
 const SectionVideo = ({ mobileSrc, desktopSrc, poster }) => {
   const videoRef = useRef(null)
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     // Ya NO llamamos .load() aquí: como las <source> ya vienen presentes
@@ -30,7 +31,9 @@ const SectionVideo = ({ mobileSrc, desktopSrc, poster }) => {
     >
       <video
         ref={videoRef}
-        className='h-full w-full object-cover'
+        // Fundido de entrada una vez que ya hay un frame real listo para
+        // pintar — así se evita cualquier parpadeo del primer cuadro.
+        className={`h-full w-full object-cover transition-opacity duration-500 ${ready ? 'opacity-100' : 'opacity-0'}`}
         style={{ transform: 'translateZ(0)', backfaceVisibility: 'hidden' }}
         autoPlay
         muted
@@ -39,6 +42,7 @@ const SectionVideo = ({ mobileSrc, desktopSrc, poster }) => {
         preload='auto'
         poster={poster}
         aria-hidden='true'
+        onCanPlay={() => setReady(true)}
       >
         {desktopSrc && <source src={desktopSrc} media='(min-width: 1024px)' type='video/mp4' />}
         <source src={mobileSrc} type='video/mp4' />

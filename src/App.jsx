@@ -30,10 +30,11 @@ const App = () => {
   useTrackPageview()
 
   const isHome = pathname === '/'
+  const isWork = pathname === '/work' || pathname === '/projects'
 
   useEffect(() => {
-    if (isHome || navOpen) setHasOpenedGarden(true)
-  }, [isHome, navOpen])
+    if (isHome || isWork || navOpen) setHasOpenedGarden(true)
+  }, [isHome, isWork, navOpen])
 
   useEffect(() => {
     window.scrollTo(0, 0)

@@ -11,7 +11,7 @@ const Navbar = () => {
   const isHome = pathname === '/'
 
   return (
-    <div className='fixed top-0 z-40 flex w-full items-start justify-between p-2 lg:p-4'>
+    <div className='fixed top-0 z-40 flex w-full items-start justify-between p-1 lg:p-2'>
       {/* En Home el logo ya vive dentro del propio hero — mostrar también
           este de aquí duplicaba el logo en pantalla. En las demás páginas
           sigue siendo el único, pegado bien a la esquina. */}

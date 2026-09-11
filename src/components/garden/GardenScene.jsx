@@ -49,7 +49,8 @@ const GardenScene = ({ initialize, onProgress, onReady }) => {
     const draco = new DRACOLoader(manager)
     // Decodificador local (copiado de node_modules) en vez del CDN externo
     // de Google — evita una conexión externa extra que alargaba la carga.
-    draco.setDecoderConfig({ type: 'js' })
+    // Sin forzar type:'js': así usa WASM cuando el navegador lo soporta
+    // (más rápido y es la ruta más probada de la librería).
     draco.setDecoderPath('/draco/')
     loader.setDRACOLoader(draco)
 
@@ -138,25 +139,51 @@ const GardenScene = ({ initialize, onProgress, onReady }) => {
     }
 
     let model = null
-    loader.load('/garden/model.glb', (gltf) => {
-      model = gltf.scene
-      gltf.scene.traverse((child) => {
-        if (child.isMesh) {
-          child.material = new THREE.ShaderMaterial({
-            uniforms: {
-              ...uniforms,
-              map: { value: child.material.map },
-              emissive: { value: child.material.emissiveMap },
-            },
-            vertexShader,
-            fragmentShader,
-          })
-          child.material.needsUpdate = true
-        }
-      })
-      scene.add(gltf.scene)
+    let loadSettled = false
+    const settleLoad = () => {
+      if (loadSettled) return
+      loadSettled = true
       onReady?.()
-    })
+    }
+    // Si algo falla al cargar (red, archivo corrupto, etc.), esto evita que
+    // la pantalla de carga se quede esperando para siempre sin avisar nada
+    // — se loguea el motivo real en la consola para poder diagnosticarlo.
+    const safetyTimeout = setTimeout(() => {
+      if (!loadSettled) {
+        console.warn('[GardenScene] tiempo de espera agotado cargando el modelo 3D — revisa la consola/red para más detalle')
+        settleLoad()
+      }
+    }, 20000)
+
+    loader.load(
+      '/garden/model.glb',
+      (gltf) => {
+        model = gltf.scene
+        gltf.scene.traverse((child) => {
+          if (child.isMesh) {
+            child.material = new THREE.ShaderMaterial({
+              uniforms: {
+                ...uniforms,
+                map: { value: child.material.map },
+                emissive: { value: child.material.emissiveMap },
+              },
+              vertexShader,
+              fragmentShader,
+            })
+            child.material.needsUpdate = true
+          }
+        })
+        scene.add(gltf.scene)
+        clearTimeout(safetyTimeout)
+        settleLoad()
+      },
+      undefined,
+      (error) => {
+        console.error('[GardenScene] error cargando el modelo 3D:', error)
+        clearTimeout(safetyTimeout)
+        settleLoad()
+      },
+    )
 
     const handleResize = () => {
       width = container.offsetWidth
@@ -185,6 +212,7 @@ const GardenScene = ({ initialize, onProgress, onReady }) => {
     return () => {
       // Nunca se llama en uso normal (el componente vive toda la sesión),
       // pero se deja la limpieza completa por si el árbol se desmonta.
+      clearTimeout(safetyTimeout)
       cancelAnimationFrame(frameId)
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('pointermove', onPointerMove)

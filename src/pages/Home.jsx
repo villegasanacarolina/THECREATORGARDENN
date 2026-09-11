@@ -34,11 +34,11 @@ const Home = () => {
 
     const tl = gsap.timeline()
     if (scrolled) {
-      tl.to(taglineChars, { opacity: 0, filter: 'blur(12px)', y: -10, duration: 0.5, stagger: { each: 0.01, from: 'random' }, ease: 'power2.in' })
-      tl.fromTo(statementChars, { opacity: 0, filter: 'blur(12px)', y: 10 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.8, stagger: { each: 0.008, from: 'random' }, ease: 'power2.out' }, '-=0.2')
+      tl.to(taglineChars, { opacity: 0, filter: 'blur(22px)', y: -18, duration: 0.6, stagger: { each: 0.014, from: 'random' }, ease: 'power2.in' })
+      tl.fromTo(statementChars, { opacity: 0, filter: 'blur(22px)', y: 18 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 1, stagger: { each: 0.012, from: 'random' }, ease: 'power2.out' }, '-=0.25')
     } else {
-      tl.to(statementChars, { opacity: 0, filter: 'blur(12px)', y: 10, duration: 0.4, stagger: { each: 0.006, from: 'random' }, ease: 'power2.in' })
-      tl.fromTo(taglineChars, { opacity: 0, filter: 'blur(12px)', y: -10 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.6, stagger: { each: 0.01, from: 'random' }, ease: 'power2.out' }, '-=0.15')
+      tl.to(statementChars, { opacity: 0, filter: 'blur(22px)', y: 18, duration: 0.5, stagger: { each: 0.01, from: 'random' }, ease: 'power2.in' })
+      tl.fromTo(taglineChars, { opacity: 0, filter: 'blur(22px)', y: -18 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.8, stagger: { each: 0.014, from: 'random' }, ease: 'power2.out' }, '-=0.2')
     }
   }, [scrolled])
 
