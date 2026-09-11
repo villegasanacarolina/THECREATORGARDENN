@@ -15,7 +15,7 @@ import { vertexShader, fragmentShader } from '../../lib/gardenShaders'
 // a Home: no hay que recargar nada).
 // onProgress(0-100) / onReady(): para mostrar una barra de carga mientras
 // se descarga el modelo, en vez de dejar la pantalla vacía sin avisar nada.
-const GardenScene = ({ initialize, onProgress, onReady }) => {
+const GardenScene = ({ initialize, onProgress, onReady, onError }) => {
   const containerRef = useRef(null)
   const mountedRef = useRef(false)
 
@@ -181,6 +181,7 @@ const GardenScene = ({ initialize, onProgress, onReady }) => {
       (error) => {
         console.error('[GardenScene] error cargando el modelo 3D:', error)
         clearTimeout(safetyTimeout)
+        onError?.(error)
         settleLoad()
       },
     )
@@ -223,7 +224,7 @@ const GardenScene = ({ initialize, onProgress, onReady }) => {
       renderer.dispose()
       container.removeChild(renderer.domElement)
     }
-  }, [initialize, onProgress, onReady])
+  }, [initialize, onProgress, onReady, onError])
 
   return <div ref={containerRef} className="pointer-events-none absolute inset-0 h-full w-full" />
 }

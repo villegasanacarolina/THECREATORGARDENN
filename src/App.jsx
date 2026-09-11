@@ -9,7 +9,7 @@ import Navbar from './components/Navigation/Navbar'
 import FullScreenNav from './components/Navigation/FullScreenNav'
 import Stairs from './components/common/Stairs'
 import useTrackPageview from './hooks/useTrackPageview'
-import { NavbarContext } from './context/NavContext'
+import { NavbarContext, NavbarColorContext } from './context/NavContext'
 
 // Cargado bajo demanda: /admin trae su propia librería de gráficas
 // (recharts), así que solo se descarga cuando alguien de verdad entra ahí
@@ -24,21 +24,32 @@ const LoadingScreen = lazy(() => import('./components/garden/LoadingScreen'))
 const App = () => {
   const { pathname } = useLocation()
   const [navOpen] = useContext(NavbarContext)
+  const [navColor] = useContext(NavbarColorContext)
   const [hasOpenedGarden, setHasOpenedGarden] = useState(false)
   const [gardenProgress, setGardenProgress] = useState(0)
   const [gardenReady, setGardenReady] = useState(false)
+  const [gardenError, setGardenError] = useState(null)
+  const [soundMuted, setSoundMuted] = useState(true)
   useTrackPageview()
 
   const isHome = pathname === '/'
-  const isWork = pathname === '/work' || pathname === '/projects'
 
   useEffect(() => {
-    if (isHome || isWork || navOpen) setHasOpenedGarden(true)
-  }, [isHome, isWork, navOpen])
+    if (isHome || navOpen) setHasOpenedGarden(true)
+  }, [isHome, navOpen])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
+
+  function toggleSound() {
+    const audio = document.getElementById('background-audio')
+    if (!audio) return
+    const next = !audio.muted
+    audio.muted = next
+    if (!next && audio.paused) audio.play().catch(() => {})
+    setSoundMuted(next)
+  }
 
   useEffect(() => {
     let audio = document.getElementById('background-audio')
@@ -59,6 +70,7 @@ const App = () => {
 
     const unmute = () => {
       audio.muted = false
+      setSoundMuted(false)
       if (audio.paused) audio.play().catch(() => {})
       window.removeEventListener('pointerdown', unmute, true)
       window.removeEventListener('keydown', unmute, true)
@@ -99,12 +111,33 @@ const App = () => {
       <Suspense fallback={null}>
         {hasOpenedGarden && (
           <div className={`pointer-events-none fixed inset-0 ${navOpen ? 'z-[45]' : 'z-0'}`}>
-            <GardenScene initialize onProgress={setGardenProgress} onReady={() => setGardenReady(true)} />
+            <GardenScene
+              initialize
+              onProgress={setGardenProgress}
+              onReady={() => setGardenReady(true)}
+              onError={(err) => setGardenError(err?.message || 'error desconocido')}
+            />
           </div>
         )}
         {isHome && <LoadingScreen progress={gardenProgress} ready={gardenReady} />}
       </Suspense>
+      {gardenError && (
+        <div className='fixed bottom-2 left-2 z-[70] max-w-xs rounded bg-red-600 px-3 py-2 font-[font1] text-xs text-white'>
+          No se pudo cargar la animación 3D: {gardenError}
+        </div>
+      )}
       <FullScreenNav />
+      {/* Muy pequeño, a propósito — vive junto a About/Close sin competir
+          con ellos. z-[55] para estar siempre por encima, sin importar si
+          el menú está abierto o cerrado. */}
+      <button
+        type='button'
+        aria-label={soundMuted ? 'Activar sonido' : 'Desactivar sonido'}
+        onClick={toggleSound}
+        className={`fixed right-[4.7rem] top-2 z-[55] p-1 font-[font1] text-[9px] uppercase tracking-wide transition-colors lg:right-32 lg:top-4 lg:p-2 lg:text-[10px] ${navColor === 'black' ? 'text-black/40 hover:text-black' : 'text-white/40 hover:text-white'}`}
+      >
+        {soundMuted ? 'Sound off' : 'Sound on'}
+      </button>
       <Stairs>
         <Routes>
           <Route path='/' element={<Home />} />

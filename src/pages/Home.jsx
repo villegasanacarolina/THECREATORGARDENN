@@ -4,8 +4,8 @@ import gsap from 'gsap'
 import Logo from '../components/common/Logo'
 import { trackEvent } from '../lib/trackEvent'
 
-const TAGLINE = 'UGC agency for ambitious brands.'
-const STATEMENT = "We blend strategy, storytelling, and creator content into campaigns that don't just get seen — they get remembered."
+const TAGLINE = 'Innovative digital experiences studio'
+const STATEMENT = 'Transcend anything seen or felt before by crafting unparalleled experiences for ambitious brands.'
 
 const splitChars = (text) =>
   text.split('').map((char, i) => (
@@ -16,6 +16,9 @@ const splitChars = (text) =>
 
 const Home = () => {
   const [scrolled, setScrolled] = useState(false)
+  // El logo + "The Creator Garden" desaparecen junto con el tagline, y
+  // vuelven junto con él — por eso comparten el mismo ref/timeline.
+  const wordmarkRef = useRef(null)
   const taglineRef = useRef(null)
   const statementRef = useRef(null)
 
@@ -28,17 +31,22 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
+    const wordmarkEl = wordmarkRef.current
     const taglineChars = taglineRef.current?.children
     const statementChars = statementRef.current?.children
-    if (!taglineChars || !statementChars) return
+    if (!wordmarkEl || !taglineChars || !statementChars) return
 
+    // Transición de humo bien marcada: mucho blur, letras dispersas al
+    // azar, y suficiente duración para que se note claramente.
     const tl = gsap.timeline()
     if (scrolled) {
-      tl.to(taglineChars, { opacity: 0, filter: 'blur(22px)', y: -18, duration: 0.6, stagger: { each: 0.014, from: 'random' }, ease: 'power2.in' })
-      tl.fromTo(statementChars, { opacity: 0, filter: 'blur(22px)', y: 18 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 1, stagger: { each: 0.012, from: 'random' }, ease: 'power2.out' }, '-=0.25')
+      tl.to(wordmarkEl, { opacity: 0, filter: 'blur(24px)', y: -20, duration: 0.6, ease: 'power2.in' })
+      tl.to(taglineChars, { opacity: 0, filter: 'blur(24px)', y: -20, duration: 0.6, stagger: { each: 0.016, from: 'random' }, ease: 'power2.in' }, '<')
+      tl.fromTo(statementChars, { opacity: 0, filter: 'blur(24px)', y: 20 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 1.1, stagger: { each: 0.014, from: 'random' }, ease: 'power2.out' }, '-=0.3')
     } else {
-      tl.to(statementChars, { opacity: 0, filter: 'blur(22px)', y: 18, duration: 0.5, stagger: { each: 0.01, from: 'random' }, ease: 'power2.in' })
-      tl.fromTo(taglineChars, { opacity: 0, filter: 'blur(22px)', y: -18 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.8, stagger: { each: 0.014, from: 'random' }, ease: 'power2.out' }, '-=0.2')
+      tl.to(statementChars, { opacity: 0, filter: 'blur(24px)', y: 20, duration: 0.55, stagger: { each: 0.012, from: 'random' }, ease: 'power2.in' })
+      tl.fromTo(wordmarkEl, { opacity: 0, filter: 'blur(24px)', y: -20 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.9, ease: 'power2.out' }, '-=0.25')
+      tl.fromTo(taglineChars, { opacity: 0, filter: 'blur(24px)', y: -20 }, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.9, stagger: { each: 0.016, from: 'random' }, ease: 'power2.out' }, '<')
     }
   }, [scrolled])
 
@@ -48,14 +56,15 @@ const Home = () => {
         {/* fila de arriba: queda vacía en Home — el logo/About ya vive en Navbar */}
         <div />
 
-        {/* centro: wordmark + texto que cambia con el scroll */}
-        <div className='flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-12'>
-          <div className='flex shrink-0 items-center gap-3'>
+        {/* centro: wordmark + texto que cambia con el scroll — alineado a
+            la izquierda, con margen (no pegado al borde) */}
+        <div className='flex flex-col gap-6 pl-2 lg:flex-row lg:items-center lg:gap-12 lg:pl-6'>
+          <div ref={wordmarkRef} className='flex shrink-0 items-center gap-3'>
             <Logo className='h-6 w-6 lg:h-8 lg:w-8' />
             <span className='font-[font3] text-xs uppercase tracking-[0.2em] lg:text-sm'>The Creator Garden</span>
           </div>
 
-          <div className='relative max-w-xl'>
+          <div className='relative max-w-xl text-left'>
             <span ref={taglineRef} className='block font-[font1] text-2xl leading-snug lg:text-3xl'>
               {splitChars(TAGLINE)}
             </span>
