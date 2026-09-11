@@ -3,8 +3,10 @@ import gsap from 'gsap'
 import { useContext, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { NavbarContext } from '../../context/NavContext'
+import { useSound } from '../../hooks/useSound'
 import { trackEvent } from '../../lib/trackEvent'
 import SmokeText from './SmokeText'
+import SoundIcon from '../common/SoundIcon'
 
 const links = [
   { label: 'Work', hover: 'See everything', to: '/work' },
@@ -19,6 +21,7 @@ const NAVIGATE_DELAY_MS = 850
 
 const FullScreenNav = () => {
   const [navOpen, setNavOpen] = useContext(NavbarContext)
+  const [muted, toggleSound] = useSound()
   const [activeIndex, setActiveIndex] = useState(null)
   const navigate = useNavigate()
   const navigateTimeoutRef = useRef(null)
@@ -70,14 +73,25 @@ const FullScreenNav = () => {
     // sólido evita que la página de atrás se alcance a ver a través del
     // menú — nunca debe haber traslape con el contenido de otra página.
     <div id='fullscreennav' className='fullscreennav isolate fixed inset-0 z-50 hidden overflow-hidden bg-[#e5e5e5]'>
-      <button
-        type='button'
-        aria-label='Close menu'
-        onClick={closeMenu}
-        className='absolute right-5 top-5 z-10 font-[font3] text-[clamp(0.9rem,1.4vw,1.1rem)] uppercase tracking-wide text-black/70 transition-colors hover:text-black lg:right-10 lg:top-10'
-      >
-        Close
-      </button>
+      <div className='absolute right-5 top-5 z-10 flex items-center gap-2 lg:right-10 lg:top-10 lg:gap-3'>
+        <button
+          type='button'
+          aria-label={muted ? 'Activar sonido' : 'Desactivar sonido'}
+          data-sound-toggle
+          onClick={toggleSound}
+          className='text-black/70 transition-colors hover:text-black'
+        >
+          <SoundIcon muted={muted} />
+        </button>
+        <button
+          type='button'
+          aria-label='Close menu'
+          onClick={closeMenu}
+          className='font-[font3] text-[clamp(0.9rem,1.4vw,1.1rem)] uppercase tracking-wide text-black/70 transition-colors hover:text-black'
+        >
+          Close
+        </button>
+      </div>
 
       <div className='relative z-10 flex h-dvh flex-col items-center justify-center gap-3 px-6 lg:gap-5'>
         {links.map((item, index) => (

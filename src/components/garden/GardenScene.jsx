@@ -47,11 +47,11 @@ const GardenScene = ({ initialize, onProgress, onReady, onError }) => {
     const textureLoader = new THREE.TextureLoader(manager)
     const loader = new GLTFLoader(manager)
     const draco = new DRACOLoader(manager)
-    // Decodificador local (copiado de node_modules) en vez del CDN externo
-    // de Google — evita una conexión externa extra que alargaba la carga.
-    // Sin forzar type:'js': así usa WASM cuando el navegador lo soporta
-    // (más rápido y es la ruta más probada de la librería).
-    draco.setDecoderPath('/draco/')
+    // Revertido al CDN de Google: esta es la configuración que sí
+    // funcionaba en la primera versión. El cambio a un decodificador local
+    // (para intentar acelerar la carga) fue probablemente lo que rompió la
+    // animación — mejor confiable que "rápido pero roto".
+    draco.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
     loader.setDRACOLoader(draco)
 
     const trailTexture = new TrailTexture({

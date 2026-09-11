@@ -8,6 +8,7 @@ import Contact from './pages/Contact'
 import Navbar from './components/Navigation/Navbar'
 import FullScreenNav from './components/Navigation/FullScreenNav'
 import Stairs from './components/common/Stairs'
+import SoundIcon from './components/common/SoundIcon'
 import useTrackPageview from './hooks/useTrackPageview'
 import { NavbarContext, NavbarColorContext } from './context/NavContext'
 
@@ -17,7 +18,8 @@ import { NavbarContext, NavbarColorContext } from './context/NavContext'
 const Admin = lazy(() => import('./pages/Admin'))
 
 // Igual que Admin: three.js (la animación 3D) solo se descarga cuando hace
-// falta — al entrar a Home, o al abrir el menú desde cualquier otra página.
+// falta — al entrar a Home o Work, o al abrir el menú desde cualquier otra
+// página.
 const GardenScene = lazy(() => import('./components/garden/GardenScene'))
 const LoadingScreen = lazy(() => import('./components/garden/LoadingScreen'))
 
@@ -33,14 +35,35 @@ const App = () => {
   useTrackPageview()
 
   const isHome = pathname === '/'
+  const isWork = pathname === '/work' || pathname === '/projects'
 
   useEffect(() => {
-    if (isHome || navOpen) setHasOpenedGarden(true)
-  }, [isHome, navOpen])
+    if (isHome || isWork || navOpen) setHasOpenedGarden(true)
+  }, [isHome, isWork, navOpen])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
+
+  // Música de fondo: arranca SIEMPRE silenciada (los navegadores solo
+  // permiten autoplay sin sonido) y solo se activa cuando el usuario le da
+  // clic al botón de sonido — nunca por ningún otro clic en la página. Así
+  // nunca se "reactiva sola" después de que la silencias a propósito.
+  useEffect(() => {
+    let audio = document.getElementById('background-audio')
+    if (!audio) {
+      audio = document.createElement('audio')
+      audio.id = 'background-audio'
+      audio.src = '/GRIMES.MP3'
+      audio.preload = 'auto'
+      audio.loop = true
+      audio.muted = true
+      audio.setAttribute('aria-hidden', 'true')
+      document.body.appendChild(audio)
+    }
+    audio.volume = 0.8
+    audio.play().catch(() => {})
+  }, [])
 
   function toggleSound() {
     const audio = document.getElementById('background-audio')
@@ -51,62 +74,23 @@ const App = () => {
     setSoundMuted(next)
   }
 
-  useEffect(() => {
-    let audio = document.getElementById('background-audio')
-    if (!audio) {
-      audio = document.createElement('audio')
-      audio.id = 'background-audio'
-      audio.src = '/GRIMES.MP3'
-      audio.preload = 'auto'
-      audio.loop = true
-      audio.setAttribute('aria-hidden', 'true')
-      document.body.appendChild(audio)
-    }
-
-    audio.volume = 0.8
-    audio.loop = true
-    audio.muted = true
-    audio.play().catch(() => {})
-
-    const unmute = () => {
-      audio.muted = false
-      setSoundMuted(false)
-      if (audio.paused) audio.play().catch(() => {})
-      window.removeEventListener('pointerdown', unmute, true)
-      window.removeEventListener('keydown', unmute, true)
-      window.removeEventListener('touchstart', unmute, true)
-    }
-
-    window.addEventListener('pointerdown', unmute, true)
-    window.addEventListener('keydown', unmute, true)
-    window.addEventListener('touchstart', unmute, true)
-
-    return () => {
-      window.removeEventListener('pointerdown', unmute, true)
-      window.removeEventListener('keydown', unmute, true)
-      window.removeEventListener('touchstart', unmute, true)
-    }
-  }, [])
-
   return (
     <div className='overflow-x-clip'>
       {/*
         Navbar y FullScreenNav viven FUERA de Stairs a propósito: Stairs le
-        aplica un transform (scale) a todo lo que envuelve para la animación
-        de transición, y en CSS eso convierte a ese contenedor en el punto de
+        aplica un transform a todo lo que envuelve para la animación de
+        transición, y en CSS eso convierte a ese contenedor en el punto de
         referencia de cualquier position:fixed de adentro. Si el menú quedaba
-        adentro, dejaba de estar fijo a la pantalla real y pasaba a estar fijo
-        a la altura de TODA la página — de ahí el bug de que el menú "se
-        perdía" o se dibujaba traslapado. Ahora el menú queda siempre fijo a
-        la ventana, sin importar el scroll ni las transiciones de página.
+        adentro, dejaba de estar fijo a la pantalla real.
       */}
       <Navbar />
+
       {/*
-        Una sola instancia de la animación 3D, compartida entre Home y el
-        menú — así nunca se carga el modelo dos veces. Cuando el menú está
-        cerrado vive detrás de todo (z-0, sirve de fondo en Home); cuando se
-        abre, sube por encima del contenido de la página pero sigue debajo
-        del texto del menú (z-45 < z-50 del menú).
+        Una sola instancia de la animación 3D, compartida entre Home, Work y
+        el menú — así nunca se carga el modelo dos veces. Cuando el menú
+        está cerrado vive detrás de todo (z-0); cuando se abre, sube por
+        encima del contenido de la página pero sigue debajo del texto del
+        menú (z-45 < z-50 del menú).
       */}
       <Suspense fallback={null}>
         {hasOpenedGarden && (
@@ -121,23 +105,27 @@ const App = () => {
         )}
         {isHome && <LoadingScreen progress={gardenProgress} ready={gardenReady} />}
       </Suspense>
+
       {gardenError && (
         <div className='fixed bottom-2 left-2 z-[70] max-w-xs rounded bg-red-600 px-3 py-2 font-[font1] text-xs text-white'>
           No se pudo cargar la animación 3D: {gardenError}
         </div>
       )}
+
       <FullScreenNav />
-      {/* Muy pequeño, a propósito — vive junto a About/Close sin competir
-          con ellos. z-[55] para estar siempre por encima, sin importar si
-          el menú está abierto o cerrado. */}
+
+      {/* Botón de sonido: muy pequeño, pegado justo a la izquierda de
+          About/Close. z-[55] para estar siempre visible sin importar si el
+          menú está abierto. */}
       <button
         type='button'
         aria-label={soundMuted ? 'Activar sonido' : 'Desactivar sonido'}
         onClick={toggleSound}
-        className={`fixed right-[4.7rem] top-2 z-[55] p-1 font-[font1] text-[9px] uppercase tracking-wide transition-colors lg:right-32 lg:top-4 lg:p-2 lg:text-[10px] ${navColor === 'black' ? 'text-black/40 hover:text-black' : 'text-white/40 hover:text-white'}`}
+        className={`fixed right-14 top-2 z-[55] p-2 transition-colors lg:right-24 lg:top-4 ${navColor === 'black' ? 'text-black/50 hover:text-black' : 'text-white/50 hover:text-white'}`}
       >
-        {soundMuted ? 'Sound off' : 'Sound on'}
+        <SoundIcon muted={soundMuted} className='h-4 w-4 lg:h-5 lg:w-5' />
       </button>
+
       <Stairs>
         <Routes>
           <Route path='/' element={<Home />} />
