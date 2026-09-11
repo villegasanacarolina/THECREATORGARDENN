@@ -27,7 +27,7 @@ const Approach = () => {
                 <ScrollSmokeReveal
                   as='p'
                   text={block.text}
-                  className='font-[font1] font-medium text-[2.7rem] leading-tight [text-shadow:0_3px_12px_rgba(0,0,0,0.55)] lg:text-[3.2rem]'
+                  className='font-[font1] font-medium text-[2.7rem] leading-tight [text-shadow:0_4px_14px_rgba(0,0,0,0.68)] lg:text-[3.2rem]'
                   immediate={index === 0}
                   delay={index === 0 ? 0.08 : 0}
                 />

@@ -21,7 +21,7 @@ const Services = () => {
                 <ScrollSmokeReveal
                   as='p'
                   text={text}
-                  className='font-[font1] font-medium text-[2.7rem] leading-tight [text-shadow:0_3px_12px_rgba(0,0,0,0.55)] lg:text-[3.2rem]'
+                  className='font-[font1] font-medium text-[2.7rem] leading-tight [text-shadow:0_4px_14px_rgba(0,0,0,0.68)] lg:text-[3.2rem]'
                   immediate={introIndex === 0}
                   delay={introIndex === 0 ? 0.08 : 0}
                 />
@@ -33,7 +33,7 @@ const Services = () => {
 
       {serviceGroups.map((group, index) => (
         <section key={index} className='relative z-10 isolate flex overflow-hidden px-6 py-24 lg:justify-end lg:px-16'>
-          <ul className='relative ml-auto w-full max-w-[21rem] space-y-3 text-right font-[font1] text-[1.7rem] [text-shadow:0_3px_12px_rgba(0,0,0,0.55)] lg:text-[2.3rem]'>
+          <ul className='relative ml-auto w-full max-w-[21rem] space-y-3 text-right font-[font1] text-[1.7rem] [text-shadow:0_4px_14px_rgba(0,0,0,0.68)] lg:text-[2.3rem]'>
             {group.map((item) => (
               <ScrollSmokeReveal as='li' key={item} text={item} />
             ))}
