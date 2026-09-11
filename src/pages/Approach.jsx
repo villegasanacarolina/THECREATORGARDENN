@@ -11,7 +11,7 @@ const Approach = () => {
         <ScrollSmokeReveal
           as='h1'
           text='Our approach'
-          className='font-[font2] text-6xl uppercase leading-none lg:text-[10vw]'
+          className='font-[font2] text-7xl uppercase leading-none [text-shadow:0_3px_14px_rgba(0,0,0,0.55)] lg:text-[10.5vw]'
           immediate
         />
       </div>
@@ -27,7 +27,7 @@ const Approach = () => {
                 <ScrollSmokeReveal
                   as='p'
                   text={block.text}
-                  className='font-[font1] font-medium text-[2.5rem] leading-tight lg:text-[3rem]'
+                  className='font-[font1] font-medium text-[2.7rem] leading-tight [text-shadow:0_3px_12px_rgba(0,0,0,0.55)] lg:text-[3.2rem]'
                   immediate={index === 0}
                   delay={index === 0 ? 0.08 : 0}
                 />
