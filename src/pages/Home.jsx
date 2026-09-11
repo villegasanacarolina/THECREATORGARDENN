@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import Logo from '../components/common/Logo'
+import HomeStatement from '../components/garden/HomeStatement'
 import { trackEvent } from '../lib/trackEvent'
 
 const TAGLINE = 'Innovative digital experiences studio'
-const STATEMENT = 'Transcend anything seen or felt before by crafting unparalleled experiences for ambitious brands.'
 
 const splitChars = (text) =>
   text.split('').map((char, i) => (
@@ -18,22 +18,34 @@ const Home = () => {
   const [scrolled, setScrolled] = useState(false)
   const wordmarkRef = useRef(null)
   const taglineRef = useRef(null)
-  const statementRef = useRef(null)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > window.innerHeight * 0.2)
+    const syncFromScroll = () => {
+      const threshold = Math.max(60, window.innerHeight * 0.12)
+      setScrolled(window.scrollY > threshold)
     }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+
+    const resetHome = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      setScrolled(false)
+    }
+
+    syncFromScroll()
+    window.addEventListener('scroll', syncFromScroll, { passive: true })
+    window.addEventListener('tcg:reset-home', resetHome)
+
+    return () => {
+      window.removeEventListener('scroll', syncFromScroll)
+      window.removeEventListener('tcg:reset-home', resetHome)
+    }
   }, [])
 
   useEffect(() => {
     const wordmarkEl = wordmarkRef.current
     const taglineChars = taglineRef.current ? [...taglineRef.current.children] : []
-    const statementChars = statementRef.current ? [...statementRef.current.children] : []
-    if (!wordmarkEl || taglineChars.length === 0 || statementChars.length === 0) return
+    if (!wordmarkEl || taglineChars.length === 0) return undefined
 
+    gsap.killTweensOf([wordmarkEl, ...taglineChars])
     const tl = gsap.timeline()
 
     if (scrolled) {
@@ -41,30 +53,15 @@ const Home = () => {
         opacity: 0,
         filter: 'blur(24px)',
         y: -20,
-        duration: 0.6,
-        stagger: 0.012,
-        ease: 'power2.in',
-      })
-      tl.fromTo(
-        statementChars,
-        { opacity: 0, filter: 'blur(24px)', y: 20 },
-        { opacity: 1, filter: 'blur(0px)', y: 0, duration: 1.1, stagger: 0.012, ease: 'power2.out' },
-        '-=0.25',
-      )
-    } else {
-      tl.to(statementChars, {
-        opacity: 0,
-        filter: 'blur(24px)',
-        y: 20,
-        duration: 0.5,
+        duration: 0.58,
         stagger: 0.01,
         ease: 'power2.in',
       })
+    } else {
       tl.fromTo(
         [wordmarkEl, ...taglineChars],
         { opacity: 0, filter: 'blur(24px)', y: -20 },
-        { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.9, stagger: 0.012, ease: 'power2.out' },
-        '-=0.2',
+        { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.86, stagger: 0.01, ease: 'power2.out' },
       )
     }
 
@@ -78,7 +75,7 @@ const Home = () => {
 
         <div className='flex flex-col gap-6 pl-2 lg:flex-row lg:items-center lg:gap-12 lg:pl-6'>
           <div ref={wordmarkRef} className='flex shrink-0 items-center gap-3'>
-            <Logo className='h-6 w-6 lg:h-8 lg:w-8' />
+            <Logo tone='black' className='h-6 w-6 lg:h-8 lg:w-8' />
             <span className='font-[font3] text-xs uppercase tracking-[0.2em] lg:text-sm'>The Creator Garden</span>
           </div>
 
@@ -87,13 +84,8 @@ const Home = () => {
           </span>
         </div>
 
-        {/* Al hacer scroll, este texto aparece como una pieza independiente,
-            centrada verticalmente en la zona izquierda y con aire suficiente
-            respecto al borde, como en la referencia. */}
-        <div className='pointer-events-none absolute left-[7vw] top-1/2 w-[min(46rem,82vw)] -translate-y-1/2 text-left lg:left-[8vw] lg:w-[min(48rem,58vw)]'>
-          <span ref={statementRef} className='block font-[font1] text-[clamp(2rem,4.2vw,4.3rem)] leading-[1.05]' style={{ opacity: 0 }}>
-            {splitChars(STATEMENT)}
-          </span>
+        <div className='absolute left-[7vw] top-1/2 w-[86vw] -translate-y-1/2 text-left lg:left-[8vw] lg:w-[min(58vw,55rem)]'>
+          <HomeStatement visible={scrolled} />
         </div>
 
         <div className='flex items-end justify-between'>

@@ -1,7 +1,9 @@
-// Logo real (ya no el placeholder de texto "TCG"): imagen con fondo
-// transparente, siempre en negro para que se vea bien en cualquier fondo.
-const Logo = ({ className = '' }) => (
-  <img src='/logo/logo.png' alt='The Creator Garden' className={className} />
+const Logo = ({ className = '', tone = 'black' }) => (
+  <img
+    src='/logo/logo.png'
+    alt='The Creator Garden'
+    className={`${tone === 'white' ? 'brightness-0 invert' : 'brightness-0'} ${className}`}
+  />
 )
 
 export default Logo

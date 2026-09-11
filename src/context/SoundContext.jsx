@@ -1,17 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { SoundContext } from './soundContextValue'
 
 export const SoundProvider = ({ children }) => {
   const [muted, setMuted] = useState(false)
 
+  const getAudio = useCallback(() => document.getElementById('background-audio'), [])
+
   useEffect(() => {
-    let audio = document.getElementById('background-audio')
+    let audio = getAudio()
     if (!audio) {
       audio = document.createElement('audio')
       audio.id = 'background-audio'
       audio.src = '/GRIMES.MP3'
-      audio.preload = 'auto'
+      // No descargamos el MP3 mientras la escena 3D está cargando. En móvil
+      // esto evita competir por ancho de banda con el GLB y acelera el loader.
+      audio.preload = 'none'
       audio.loop = true
+      audio.playsInline = true
       audio.setAttribute('aria-hidden', 'true')
       document.body.appendChild(audio)
     }
@@ -19,34 +24,46 @@ export const SoundProvider = ({ children }) => {
     audio.volume = 0.8
     audio.loop = true
     audio.muted = false
+    setMuted(false)
+  }, [getAudio])
 
-    // Intentamos iniciar el audio únicamente al entrar a la página. Algunos
-    // navegadores bloquean el autoplay con sonido; si eso ocurre, el estado
-    // queda silenciado y la única forma de activarlo es el botón de bocina.
-    audio.play().catch(() => {
+  const startSound = useCallback(() => {
+    const audio = getAudio()
+    if (!audio || audio.dataset.userMuted === 'true') return
+
+    audio.preload = 'auto'
+    audio.muted = false
+    audio.play().then(() => {
+      setMuted(false)
+    }).catch(() => {
+      // Safari/Chrome pueden bloquear autoplay con sonido. No añadimos un
+      // listener global de clic: si el navegador lo bloquea, solo la bocina
+      // puede activarlo después, tal como se pidió.
       audio.muted = true
       setMuted(true)
     })
+  }, [getAudio])
 
-    setMuted(audio.muted)
-  }, [])
-
-  function toggleSound() {
-    const audio = document.getElementById('background-audio')
+  const toggleSound = useCallback(() => {
+    const audio = getAudio()
     if (!audio) return
 
     const nextMuted = !audio.muted
     audio.muted = nextMuted
+    audio.dataset.userMuted = nextMuted ? 'true' : 'false'
 
-    if (!nextMuted && audio.paused) {
-      audio.play().catch(() => {
+    if (!nextMuted) {
+      audio.preload = 'auto'
+      audio.play().then(() => setMuted(false)).catch(() => {
         audio.muted = true
+        audio.dataset.userMuted = 'true'
         setMuted(true)
       })
+      return
     }
 
-    setMuted(nextMuted)
-  }
+    setMuted(true)
+  }, [getAudio])
 
-  return <SoundContext.Provider value={[muted, toggleSound]}>{children}</SoundContext.Provider>
+  return <SoundContext.Provider value={[muted, toggleSound, startSound]}>{children}</SoundContext.Provider>
 }

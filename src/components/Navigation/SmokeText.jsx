@@ -1,82 +1,108 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
-// Muestra "primary"; cuando revealed pasa a true, "primary" se disuelve
-// como humo (blur + sube + se desvanece, letra por letra) mientras
-// "secondary" aparece con el mismo efecto en reversa. Todo en negro plano,
-// sin imagen — solo tipografía.
-const splitChars = (text) =>
+const splitChars = (text, hidden = false) =>
   text.split('').map((char, i) => (
-    <span key={i} className='inline-block' style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}>
+    <span
+      key={i}
+      className='inline-block'
+      style={{
+        opacity: hidden ? 0 : 1,
+        filter: hidden ? 'blur(14px)' : 'blur(0px)',
+        whiteSpace: char === ' ' ? 'pre' : 'normal',
+      }}
+    >
       {char}
     </span>
   ))
 
-const SmokeText = ({ primary, secondary, revealed }) => {
+const SmokeText = ({ primary, secondary, revealed, departing = false, secondaryClassName = '' }) => {
   const primaryRef = useRef(null)
   const secondaryRef = useRef(null)
 
   useEffect(() => {
-    const primaryChars = primaryRef.current?.children
-    const secondaryChars = secondaryRef.current?.children
-    if (!primaryChars || !secondaryChars) return
+    const primaryChars = Array.from(primaryRef.current?.children || [])
+    const secondaryChars = Array.from(secondaryRef.current?.children || [])
+    if (!primaryChars.length || !secondaryChars.length) return undefined
 
+    gsap.killTweensOf([...primaryChars, ...secondaryChars])
     const tl = gsap.timeline()
+
+    if (departing) {
+      tl.to([...primaryChars, ...secondaryChars], {
+        opacity: 0,
+        filter: 'blur(18px)',
+        x: () => gsap.utils.random(-7, 7),
+        y: () => gsap.utils.random(-12, 12),
+        duration: 0.62,
+        stagger: { each: 0.008, from: 'random' },
+        ease: 'power2.in',
+      })
+      return () => tl.kill()
+    }
 
     if (revealed) {
       tl.to(primaryChars, {
         opacity: 0,
         filter: 'blur(14px)',
         y: -14,
-        duration: 0.6,
-        stagger: { each: 0.012, from: 'random' },
+        duration: 0.48,
+        stagger: { each: 0.009, from: 'random' },
         ease: 'power2.in',
       })
       tl.fromTo(
         secondaryChars,
-        { opacity: 0, filter: 'blur(14px)', y: 14 },
+        { opacity: 0, filter: 'blur(16px)', y: 14, x: 0 },
         {
           opacity: 1,
           filter: 'blur(0px)',
           y: 0,
-          duration: 0.9,
-          stagger: { each: 0.014, from: 'random' },
+          x: 0,
+          duration: 0.82,
+          stagger: { each: 0.011, from: 'random' },
           ease: 'power2.out',
         },
-        '-=0.25',
+        '-=0.22',
       )
     } else {
       tl.to(secondaryChars, {
         opacity: 0,
         filter: 'blur(14px)',
         y: 14,
-        duration: 0.4,
-        stagger: { each: 0.01, from: 'random' },
+        duration: 0.3,
+        stagger: { each: 0.006, from: 'random' },
         ease: 'power2.in',
       })
       tl.fromTo(
         primaryChars,
-        { opacity: 0, filter: 'blur(14px)', y: -14 },
+        { opacity: 0, filter: 'blur(14px)', y: -12, x: 0 },
         {
           opacity: 1,
           filter: 'blur(0px)',
           y: 0,
-          duration: 0.7,
-          stagger: { each: 0.012, from: 'random' },
+          x: 0,
+          duration: 0.62,
+          stagger: { each: 0.009, from: 'random' },
           ease: 'power2.out',
         },
-        '-=0.15',
+        '-=0.12',
       )
     }
-  }, [revealed])
+
+    return () => tl.kill()
+  }, [departing, revealed])
 
   return (
-    <span className='relative inline-block'>
+    <span className='relative mx-auto block min-h-[1.05em] w-full max-w-[94vw]'>
       <span ref={primaryRef} className='block'>
         {splitChars(primary)}
       </span>
-      <span ref={secondaryRef} className='pointer-events-none absolute inset-0 block opacity-0'>
-        {splitChars(secondary)}
+      <span
+        ref={secondaryRef}
+        className={`pointer-events-none absolute left-1/2 top-1/2 block w-[92vw] -translate-x-1/2 -translate-y-1/2 whitespace-normal ${secondaryClassName}`}
+        aria-hidden='true'
+      >
+        {splitChars(secondary, true)}
       </span>
     </span>
   )

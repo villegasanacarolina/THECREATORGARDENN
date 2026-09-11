@@ -10,6 +10,7 @@ import FullScreenNav from './components/Navigation/FullScreenNav'
 import Stairs from './components/common/Stairs'
 import useTrackPageview from './hooks/useTrackPageview'
 import { NavbarContext } from './context/NavContext'
+import { useSound } from './hooks/useSound'
 
 const Admin = lazy(() => import('./pages/Admin'))
 const GardenScene = lazy(() => import('./components/garden/GardenScene'))
@@ -18,9 +19,11 @@ const LoadingScreen = lazy(() => import('./components/garden/LoadingScreen'))
 const App = () => {
   const { pathname } = useLocation()
   const [navOpen] = useContext(NavbarContext)
+  const [, , startSound] = useSound()
   const [hasOpenedGarden, setHasOpenedGarden] = useState(false)
   const [gardenProgress, setGardenProgress] = useState(0)
   const [gardenReady, setGardenReady] = useState(false)
+  const [initialLoaderDone, setInitialLoaderDone] = useState(false)
   const [gardenError, setGardenError] = useState(null)
   useTrackPageview()
 
@@ -44,6 +47,11 @@ const App = () => {
     setGardenError(err?.message || 'error desconocido')
   }, [])
 
+  const handleLoaderExited = useCallback(() => {
+    setInitialLoaderDone(true)
+    startSound?.()
+  }, [startSound])
+
   return (
     <div className='overflow-x-clip'>
       <Navbar />
@@ -62,7 +70,9 @@ const App = () => {
             />
           </div>
         )}
-        {isHome && <LoadingScreen progress={gardenProgress} ready={gardenReady} />}
+        {isHome && !initialLoaderDone && (
+          <LoadingScreen progress={gardenProgress} ready={gardenReady} onExited={handleLoaderExited} />
+        )}
       </Suspense>
 
       {gardenError && (

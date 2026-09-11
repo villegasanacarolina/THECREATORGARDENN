@@ -12,25 +12,19 @@ const Navbar = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const isHome = pathname === '/'
+  const logoTone = pathname === '/services' || pathname === '/contact' ? 'white' : 'black'
 
   const colorClass = navColor === 'black' ? 'text-black/70 hover:text-black' : 'text-white/70 hover:text-white'
 
   return (
     <div className='fixed top-0 z-40 flex w-full items-start justify-between p-1 lg:p-2'>
-      {/* En Home el logo ya vive dentro del propio hero — mostrar también
-          este de aquí duplicaba el logo en pantalla. En las demás páginas
-          sigue siendo el único, pegado bien a la esquina. */}
       {!isHome && (
         <div className='w-[clamp(5rem,7vw,7rem)] cursor-pointer' onClick={() => navigate('/')}>
-          <Logo className='h-auto w-full' />
+          <Logo tone={logoTone} className='h-auto w-full' />
         </div>
       )}
       {isHome && <div />}
 
-      {/* Oculto mientras el menú está abierto: si no, se traslapaba con el
-          botón "Close" del menú, ambos en la misma esquina. La bocina va
-          en el MISMO contenedor que "About" para quedar perfectamente
-          alineada con ella, pegada justo a su izquierda. */}
       {!navOpen && (
         <div className='flex items-center gap-2 p-3 lg:gap-3 lg:p-6'>
           <button
