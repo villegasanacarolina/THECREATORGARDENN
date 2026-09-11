@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import Logo from '../components/common/Logo'
 import HomeStatement from '../components/garden/HomeStatement'
@@ -28,20 +28,20 @@ const splitChars = (text) => {
 
 const Home = () => {
   const [scrolled, setScrolled] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
   const wordmarkRef = useRef(null)
   const taglineRef = useRef(null)
 
   useEffect(() => {
-    // Close from the full-screen menu may navigate here from another route.
-    // Consume the one-shot flag only after Home exists, then force the original
-    // wordmark/tagline state without replaying the 3D loading screen.
-    try {
-      if (sessionStorage.getItem('tcg:force-home-intro') === '1') {
-        sessionStorage.removeItem('tcg:force-home-intro')
-        window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-        setScrolled(false)
-      }
-    } catch {}
+    // Route state is set by the menu's Close button. Consume it only after
+    // Home has mounted, then clean it from history so refresh/back doesn't
+    // replay the reset. This never touches the 3D loader state in App.
+    if (location.state?.forceHomeIntro) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      setScrolled(false)
+      navigate('/', { replace: true, state: null })
+    }
 
     const syncFromScroll = () => {
       const threshold = Math.max(60, window.innerHeight * 0.12)
@@ -61,7 +61,7 @@ const Home = () => {
       window.removeEventListener('scroll', syncFromScroll)
       window.removeEventListener('tcg:reset-home', resetHome)
     }
-  }, [])
+  }, [location.state, navigate])
 
   useEffect(() => {
     const wordmarkEl = wordmarkRef.current

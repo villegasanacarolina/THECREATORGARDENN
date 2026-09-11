@@ -58,25 +58,20 @@ const FullScreenNav = () => {
     setActiveIndex(null)
     setLeavingIndex(null)
 
-    // Persist the intent through the route change. Home consumes this flag on
-    // mount, so Close works even when the page transition delays Home rendering.
-    try {
-      sessionStorage.setItem('tcg:force-home-intro', '1')
-    } catch {
-      // sessionStorage can be unavailable in strict privacy modes; the event
-      // below still covers the already-mounted Home case.
-    }
-
+    // Close must always return to the original Home state without replaying
+    // the loading screen. Route state is the reliable signal for a newly
+    // mounted Home; the custom event covers Home when it is already mounted.
     setNavOpen(false)
 
     if (window.location.pathname === '/') {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
       window.dispatchEvent(new Event('tcg:reset-home'))
-      try { sessionStorage.removeItem('tcg:force-home-intro') } catch {}
       return
     }
 
-    navigate('/')
+    navigate('/', {
+      state: { forceHomeIntro: true, closeNonce: Date.now() },
+    })
   }
 
   const gsapAnimation = () => {

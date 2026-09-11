@@ -118,7 +118,7 @@ const DetailTable = ({ children }) => (
 const TableHead = ({ children }) => <th className='whitespace-nowrap border-b border-white/15 px-3 py-3 text-left font-normal uppercase tracking-wide text-white/40'>{children}</th>
 const TableCell = ({ children, className = '' }) => <td className={`border-b border-white/[0.06] px-3 py-3 align-top text-white/75 ${className}`}>{children}</td>
 
-const AdminDashboard = ({ stats, range, loading, onRangeChange, onRefresh }) => {
+const AdminDashboard = ({ stats, range, loading, onRangeChange, onRefresh, onLogout, actionMessage }) => {
   const [loggingOut, setLoggingOut] = useState(false)
   const [visitorSearch, setVisitorSearch] = useState('')
   const [selectedVisitor, setSelectedVisitor] = useState(null)
@@ -127,9 +127,13 @@ const AdminDashboard = ({ stats, range, loading, onRangeChange, onRefresh }) => 
   const [visitorDetailError, setVisitorDetailError] = useState('')
 
   const handleLogout = async () => {
+    if (loggingOut) return
     setLoggingOut(true)
-    await fetch('/api/admin-logout', { method: 'POST' }).catch(() => {})
-    window.location.reload()
+    try {
+      await onLogout?.()
+    } finally {
+      setLoggingOut(false)
+    }
   }
 
   const visitors = safeRows(stats?.visitors)
@@ -171,13 +175,23 @@ const AdminDashboard = ({ stats, range, loading, onRangeChange, onRefresh }) => 
       v.firstReferrer, v.lastPath,
     ])
     const csv = [headers, ...rows].map((row) => row.map(escape).join(',')).join('\n')
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' })
+    const filename = `thecreatorgarden-visitors-${range}.csv`
+
+    // Appending the anchor is required by Safari/iOS and is also more reliable
+    // in Chromium than clicking a detached element. Delay URL cleanup so the
+    // browser has time to start the download.
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `thecreatorgarden-visitors-${range}.csv`
+    a.download = filename
+    a.style.display = 'none'
+    document.body.appendChild(a)
     a.click()
-    URL.revokeObjectURL(url)
+    window.setTimeout(() => {
+      a.remove()
+      URL.revokeObjectURL(url)
+    }, 1500)
   }
 
   if (!stats) return null
@@ -204,10 +218,13 @@ const AdminDashboard = ({ stats, range, loading, onRangeChange, onRefresh }) => 
           <h1 className='font-[font2] text-4xl lg:text-5xl'>Analytics</h1>
           <p className='mt-2 font-[font1] text-xs text-white/35'>Última actualización: {formatDate(stats.generatedAt)} · refresco automático cada 60 s</p>
         </div>
-        <div className='flex flex-wrap gap-2'>
-          <button type='button' onClick={exportVisitors} className='rounded-full border border-white/25 px-4 py-2 font-[font1] text-sm hover:border-[#D9A99B] hover:text-[#D9A99B]'>Exportar visitantes CSV</button>
-          <button type='button' onClick={onRefresh} disabled={loading} className='rounded-full border border-white/25 px-4 py-2 font-[font1] text-sm hover:border-[#D9A99B] hover:text-[#D9A99B] disabled:opacity-40'>{loading ? 'Actualizando…' : 'Actualizar'}</button>
-          <button type='button' onClick={handleLogout} disabled={loggingOut} className='rounded-full border border-white/25 px-4 py-2 font-[font1] text-sm hover:border-red-400 hover:text-red-400 disabled:opacity-40'>Cerrar sesión</button>
+        <div>
+          <div className='flex flex-wrap gap-2'>
+            <button type='button' onClick={exportVisitors} className='relative z-10 rounded-full border border-white/25 px-4 py-2 font-[font1] text-sm hover:border-[#D9A99B] hover:text-[#D9A99B]'>Exportar visitantes CSV</button>
+            <button type='button' onClick={() => onRefresh?.()} disabled={loading} className='relative z-10 rounded-full border border-white/25 px-4 py-2 font-[font1] text-sm hover:border-[#D9A99B] hover:text-[#D9A99B] disabled:opacity-40'>{loading ? 'Actualizando…' : 'Actualizar'}</button>
+            <button type='button' onClick={handleLogout} disabled={loggingOut} className='relative z-10 rounded-full border border-white/25 px-4 py-2 font-[font1] text-sm hover:border-red-400 hover:text-red-400 disabled:opacity-40'>{loggingOut ? 'Cerrando…' : 'Cerrar sesión'}</button>
+          </div>
+          {actionMessage && <p className='mt-2 text-right font-[font1] text-xs text-white/45'>{actionMessage}</p>}
         </div>
       </div>
 

@@ -10,9 +10,9 @@ const NavContext = ({ children }) => {
 
   const locate = useLocation().pathname
   useEffect(() => {
-    // Home, Work y Approach usan controles negros. Services y Contact,
+    // Home y Work usan controles negros. Services, Approach y Contact,
     // sobre fondos oscuros, conservan controles blancos.
-    const blackTextPages = ['/', '/work', '/projects', '/approach']
+    const blackTextPages = ['/', '/work', '/projects']
     if (blackTextPages.includes(locate)) setNavColor('black')
     else setNavColor('white')
   }, [locate])

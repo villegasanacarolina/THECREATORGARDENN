@@ -13,7 +13,7 @@ const Navbar = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const isHome = pathname === '/'
-  const logoTone = pathname === '/services' || pathname === '/contact' ? 'white' : 'black'
+  const logoTone = pathname === '/services' || pathname === '/contact' || pathname === '/approach' ? 'white' : 'black'
 
   const colorClass = navColor === 'black' ? 'text-black/70 hover:text-black' : 'text-white/70 hover:text-white'
 
