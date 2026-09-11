@@ -14,7 +14,7 @@ import { vertexShader, fragmentShader } from '../../lib/gardenShaders'
 // a Home: no hay que recargar nada).
 // onProgress(0-100) / onReady(): para mostrar una barra de carga mientras
 // se descarga el modelo, en vez de dejar la pantalla vacía sin avisar nada.
-const GardenScene = ({ initialize, onProgress, onReady, onError }) => {
+const GardenScene = ({ initialize, onProgress, onReady, onError, onDebug }) => {
   const containerRef = useRef(null)
   const mountedRef = useRef(false)
 
@@ -25,6 +25,7 @@ const GardenScene = ({ initialize, onProgress, onReady, onError }) => {
     const container = containerRef.current
     let width = container.offsetWidth
     let height = container.offsetHeight
+    onDebug?.(`montado, tamaño contenedor: ${width}x${height}`)
 
     const scene = new THREE.Scene()
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
@@ -32,6 +33,7 @@ const GardenScene = ({ initialize, onProgress, onReady, onError }) => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.outputColorSpace = THREE.SRGBColorSpace
     container.appendChild(renderer.domElement)
+    onDebug?.(`canvas creado: ${renderer.domElement.width}x${renderer.domElement.height}, estilo: ${renderer.domElement.style.width} x ${renderer.domElement.style.height}`)
 
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.01, 1000)
     camera.position.set(0, 0, 10)
@@ -156,8 +158,10 @@ const GardenScene = ({ initialize, onProgress, onReady, onError }) => {
       '/garden/model.glb',
       (gltf) => {
         model = gltf.scene
+        let meshCount = 0
         gltf.scene.traverse((child) => {
           if (child.isMesh) {
+            meshCount++
             child.material = new THREE.ShaderMaterial({
               uniforms: {
                 ...uniforms,
@@ -172,11 +176,13 @@ const GardenScene = ({ initialize, onProgress, onReady, onError }) => {
         })
         scene.add(gltf.scene)
         clearTimeout(safetyTimeout)
+        onDebug?.(`modelo cargado OK — ${meshCount} mallas agregadas a la escena`)
         settleLoad()
       },
       undefined,
       (error) => {
         console.error('[GardenScene] error cargando el modelo 3D:', error)
+        onDebug?.(`ERROR cargando modelo: ${error?.message || error}`)
         clearTimeout(safetyTimeout)
         onError?.(error)
         settleLoad()
@@ -196,6 +202,7 @@ const GardenScene = ({ initialize, onProgress, onReady, onError }) => {
 
     const clock = new THREE.Clock()
     let frameId
+    let framesReported = false
     const renderLoop = () => {
       frameId = requestAnimationFrame(renderLoop)
       clock.getDelta()
@@ -204,6 +211,10 @@ const GardenScene = ({ initialize, onProgress, onReady, onError }) => {
       uniforms.touchTexture.value = trailTexture.texture
       uniforms.autoTouchTexture.value = autoTrailTexture.texture
       renderer.render(scene, camera)
+      if (!framesReported) {
+        framesReported = true
+        onDebug?.(`primer frame renderizado — canvas visible: ${renderer.domElement.offsetWidth}x${renderer.domElement.offsetHeight}, hijos de la escena: ${scene.children.length}`)
+      }
     }
     renderLoop()
 
@@ -221,7 +232,7 @@ const GardenScene = ({ initialize, onProgress, onReady, onError }) => {
       renderer.dispose()
       container.removeChild(renderer.domElement)
     }
-  }, [initialize, onProgress, onReady, onError])
+  }, [initialize, onProgress, onReady, onError, onDebug])
 
   return <div ref={containerRef} className="pointer-events-none absolute inset-0 h-full w-full" />
 }

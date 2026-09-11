@@ -28,6 +28,7 @@ const App = () => {
   const [gardenProgress, setGardenProgress] = useState(0)
   const [gardenReady, setGardenReady] = useState(false)
   const [gardenError, setGardenError] = useState(null)
+  const [gardenDebug, setGardenDebug] = useState([])
   useTrackPageview()
 
   const isHome = pathname === '/'
@@ -66,6 +67,7 @@ const App = () => {
               onProgress={setGardenProgress}
               onReady={() => setGardenReady(true)}
               onError={(err) => setGardenError(err?.message || 'error desconocido')}
+              onDebug={(msg) => setGardenDebug((prev) => [...prev, `${new Date().toLocaleTimeString()} — ${msg}`])}
             />
           </div>
         )}
@@ -75,6 +77,17 @@ const App = () => {
       {gardenError && (
         <div className='fixed bottom-2 left-2 z-[70] max-w-xs rounded bg-red-600 px-3 py-2 font-[font1] text-xs text-white'>
           No se pudo cargar la animación 3D: {gardenError}
+        </div>
+      )}
+
+      {/* Panel de diagnóstico temporal: visible directo en la página, sin
+          necesitar herramientas de desarrollador. Se puede quitar una vez
+          que confirmemos que la animación funciona. */}
+      {gardenDebug.length > 0 && (
+        <div className='fixed bottom-2 right-2 z-[70] max-w-sm space-y-1 rounded bg-black/90 px-3 py-2 font-mono text-[10px] text-lime-400'>
+          {gardenDebug.map((line, i) => (
+            <div key={i}>{line}</div>
+          ))}
         </div>
       )}
 
